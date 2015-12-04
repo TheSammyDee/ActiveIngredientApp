@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Kaolin</string>
+    <string name="action_settings">Settings</string>
+    <string name="activityTitle_projectOverview">Projects Overview</string>
+    <string name="saveError">Error saving data</string>
+    <string name="findError">Error finding data</string>
+</resources>

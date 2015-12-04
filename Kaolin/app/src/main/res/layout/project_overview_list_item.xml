@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp">
+
+    <FrameLayout
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/colorSwatch"></FrameLayout>
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Project Name"
+        android:id="@+id/nameTxt"
+        android:layout_gravity="center_vertical"
+        android:paddingLeft="10dp" />
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Code"
+        android:id="@+id/codeTxt"
+        android:layout_gravity="center_vertical"
+        android:paddingLeft="10dp" />
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Start Date"
+        android:id="@+id/startDateTxt"
+        android:layout_gravity="center_vertical"
+        android:paddingLeft="10dp" />
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="End Date"
+        android:id="@+id/endDateTxt"
+        android:layout_gravity="center_vertical"
+        android:paddingLeft="10dp" />
+
+</LinearLayout>

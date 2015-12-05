@@ -12,9 +12,21 @@
 
     <LinearLayout
         android:orientation="vertical"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/phasesListView" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="0"
         android:paddingRight="10dp"
         android:paddingLeft="10dp">
 
@@ -128,15 +140,4 @@
             android:id="@+id/finishBtn" />
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/phasesListView" />
-    </LinearLayout>
 </LinearLayout>

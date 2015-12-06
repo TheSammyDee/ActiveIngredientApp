@@ -26,9 +26,11 @@
             android:name=".NewProject"
             android:label="New Project"
             android:parentActivityName=".ProjectOverview" />
-        <activity android:name=".EditPhases"
+        <activity
+            android:name=".EditPhases"
             android:label="Edit Phases"
-            android:parentActivityName=".ProjectOverview"></activity>
+            android:parentActivityName=".ProjectOverview" />
+        <activity android:name=".AddTasks"></activity>
     </application>
 
 </manifest>

@@ -22,7 +22,10 @@ import com.parse.SaveCallback;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditPhases extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener, View.OnClickListener, ListView.OnItemClickListener{
+public class EditPhases extends AppCompatActivity
+        implements SeekBar.OnSeekBarChangeListener,
+        View.OnClickListener,
+        ListView.OnItemClickListener{
 
     private static final String LOG_TAG = "EditPhases";
     private EditText nameEditTxt;
@@ -118,7 +121,8 @@ public class EditPhases extends AppCompatActivity implements SeekBar.OnSeekBarCh
         currentPhase.setColor("#BFFF0000");
         currentPhase.setStartDate(currentProject.getStartDate());
         currentPhase.setEndDate(currentProject.getEndDate());
-        currentPhase.setProject(ParseObject.createWithoutData(Project.class, currentProject.getObjectId()));
+        currentPhase.setProject(ParseObject.createWithoutData(
+                Project.class, currentProject.getObjectId()));
         populateFields();
     }
 

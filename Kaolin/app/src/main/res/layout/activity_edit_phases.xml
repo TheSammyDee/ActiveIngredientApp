@@ -54,7 +54,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/nameEditTxt"
             android:inputType="textCapWords"
-            android:paddingTop="10dp" />
+            android:paddingTop="10dp"
+            android:hint="Phase Name" />
 
         <LinearLayout
             android:layout_width="match_parent"

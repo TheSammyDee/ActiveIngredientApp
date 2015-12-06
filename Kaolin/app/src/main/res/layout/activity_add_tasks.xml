@@ -53,14 +53,14 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add"
-                android:id="@+id/addBtn" />
+                android:text="New"
+                android:id="@+id/newTaskBtn" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Save"
-                android:id="@+id/saveBtn"
+                android:id="@+id/saveTaskBtn"
                 android:paddingLeft="10dp" />
 
             <Button
@@ -75,7 +75,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/nameEditTxt"
             android:inputType="textCapWords"
-            android:paddingTop="10dp" />
+            android:paddingTop="10dp"
+            android:hint="Task Name" />
 
         <Spinner
             android:layout_width="200dp"
@@ -93,7 +94,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="date"
                 android:ems="10"
-                android:id="@+id/fromDateEtxt" />
+                android:id="@+id/fromDateEtxt"
+                android:hint="Start date" />
 
             <EditText
                 android:layout_width="150dp"
@@ -102,7 +104,8 @@
                 android:ems="10"
                 android:id="@+id/toDateEtxt"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp" />
+                android:paddingRight="10dp"
+                android:hint="End date" />
 
             <CheckBox
                 android:layout_width="wrap_content"
@@ -117,6 +120,156 @@
                 android:layout_height="wrap_content"
                 android:text="Unscheduled"
                 android:id="@+id/checkBox2" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="10dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Assignments"
+                    android:id="@+id/textView8" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New"
+                        android:id="@+id/newAssignBtn" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Save"
+                        android:id="@+id/saveAssignBtn"
+                        android:paddingLeft="10dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Spinner
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/personSpinner"
+                        android:layout_weight="1" />
+
+                    <Spinner
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/roleSpinner"
+                        android:layout_weight="1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:ems="10"
+                        android:id="@+id/hoursEditTxt"
+                        android:layout_weight="1"
+                        android:hint="Budgeted hours" />
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:ems="10"
+                        android:id="@+id/rateEditTxt"
+                        android:layout_weight="1"
+                        android:hint="Hourly rate" />
+                </LinearLayout>
+
+                <ListView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/assignmentsListView"
+                    android:paddingTop="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingLeft="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Materials"
+                    android:id="@+id/textView9" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New"
+                        android:id="@+id/newMatBtn" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Save"
+                        android:id="@+id/saveMatBtn"
+                        android:paddingLeft="10dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/matNameEditTxt"
+                        android:layout_weight="1"
+                        android:hint="Name" />
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:ems="10"
+                        android:id="@+id/matCostEditTxt"
+                        android:layout_weight="1"
+                        android:hint="Cost" />
+                </LinearLayout>
+
+                <ListView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/materialsListView"
+                    android:paddingTop="10dp" />
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

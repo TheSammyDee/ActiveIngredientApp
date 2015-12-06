@@ -124,7 +124,7 @@ public class Project extends ParseObject {
     }
 
     public void setStartDate(Date date){
-        put(START_DATE, date);
+        put(START_DATE, Util.removeTime(date));
     }
 
     public Date getEndDate(){
@@ -132,6 +132,6 @@ public class Project extends ParseObject {
     }
 
     public void setEndDate(Date date){
-        put(END_DATE, date);
+        put(END_DATE, Util.removeTime(date));
     }
 }

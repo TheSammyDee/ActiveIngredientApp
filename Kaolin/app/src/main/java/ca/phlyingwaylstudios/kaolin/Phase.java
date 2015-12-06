@@ -94,7 +94,7 @@ public class Phase extends ParseObject {
     }
 
     public void setStartDate(Date date){
-        put(START_DATE, date);
+        put(START_DATE, Util.removeTime(date));
     }
 
     public Date getEndDate(){
@@ -102,11 +102,11 @@ public class Phase extends ParseObject {
     }
 
     public void setEndDate(Date date){
-        put(END_DATE, date);
+        put(END_DATE, Util.removeTime(date));
     }
 
-    public String getProject(){
-        return getString(PROJECT);
+    public ParseObject getProject(){
+        return getParseObject(PROJECT);
     }
 
     public void setProject(Project project){

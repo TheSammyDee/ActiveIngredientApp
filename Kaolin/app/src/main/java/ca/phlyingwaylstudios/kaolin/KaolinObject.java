@@ -1,6 +1,7 @@
 package ca.phlyingwaylstudios.kaolin;
 
 import android.content.Context;
+import android.graphics.Color;
 
 import com.parse.ParseObject;
 
@@ -18,6 +19,7 @@ public class KaolinObject extends ParseObject{
     public static final String COLOR = "color";
     public static final String START_DATE = "startDate";
     public static final String END_DATE = "endDate";
+    public static final String PROJECT = "project";
 
     public boolean checkString(Context context, String testString, String key, List<? extends KaolinObject> list){
         if (null == testString || testString.isEmpty()){
@@ -38,5 +40,26 @@ public class KaolinObject extends ParseObject{
             }
             return true;
         }
+    }
+
+    public boolean checkColor(Context context, String color, List<? extends KaolinObject> list){
+        try {
+            Color.parseColor(color);
+        } catch (IllegalArgumentException e){
+            Util.showInvalidColorError(context);
+            return false;
+        }
+        for (int i = 0; i < list.size(); i++){
+            if (color.equals(list.get(i).getString(COLOR))){
+                if (null == this.getObjectId()) {
+                    Util.showSameColorError(context);
+                    return false;
+                } else if (!(this.hasSameId(list.get(i)))){
+                    Util.showSameColorError(context);
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

@@ -1,8 +1,6 @@
 package ca.phlyingwaylstudios.kaolin;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.widget.Toast;
 
 import com.parse.ParseClassName;
 
@@ -23,8 +21,8 @@ public class Project extends KaolinObject {
     public boolean setUpProject(Context context, String name, String code, String color,
                                 Date startDate, List<Project> projectList){
         //if (checkName(context, name, projectList) && checkCode(context, code, projectList) && checkColor(context, color, projectList)){
-        if (checkString(context, name, KaolinObject.NAME, projectList) &&
-                checkString(context, code, KaolinObject.CODE, projectList)){
+        if (checkString(context, name, NAME, projectList) &&
+                checkString(context, code, CODE, projectList)){
             setName(name);
             setCode(code);
             setColor(color);
@@ -36,66 +34,66 @@ public class Project extends KaolinObject {
         }
     }
 
-    public boolean checkName(Context context, String name, List<Project> projectList){
-        if (null == name || name.isEmpty()){
-            Util.showEmptyNameError(context);
-            return false;
-        } else {
-            for (Project p : projectList){
-                if (name.equals(p.getName())){
-                    if (null == this.getObjectId()) {
-                        Util.showSameNameError(context);
-                        return false;
-                    } else if (!(this.getObjectId().equals(p.getObjectId()))){
-                        Util.showSameNameError(context);
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-    }
+//    public boolean checkName(Context context, String name, List<Project> projectList){
+//        if (null == name || name.isEmpty()){
+//            Util.showEmptyNameError(context);
+//            return false;
+//        } else {
+//            for (Project p : projectList){
+//                if (name.equals(p.getName())){
+//                    if (null == this.getObjectId()) {
+//                        Util.showSameNameError(context);
+//                        return false;
+//                    } else if (!(this.getObjectId().equals(p.getObjectId()))){
+//                        Util.showSameNameError(context);
+//                        return false;
+//                    }
+//                }
+//            }
+//            return true;
+//        }
+//    }
 
-    public boolean checkCode(Context context, String code, List<Project> projectList){
-        if (null == code || code.isEmpty()){
-            Toast.makeText(context, "Code cannot be empty", Toast.LENGTH_LONG).show();
-            return false;
-        } else {
-            for (Project p : projectList){
-                if (code.equals(p.getCode())){
-                    if (null == this.getObjectId()) {
-                        Toast.makeText(context, "Code has already been used", Toast.LENGTH_LONG).show();
-                        return false;
-                    } else if (!(this.getObjectId().equals(p.getObjectId()))){
-                        Toast.makeText(context, "Code has already been used", Toast.LENGTH_LONG).show();
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-    }
+//    public boolean checkCode(Context context, String code, List<Project> projectList){
+//        if (null == code || code.isEmpty()){
+//            Toast.makeText(context, "Code cannot be empty", Toast.LENGTH_LONG).show();
+//            return false;
+//        } else {
+//            for (Project p : projectList){
+//                if (code.equals(p.getCode())){
+//                    if (null == this.getObjectId()) {
+//                        Toast.makeText(context, "Code has already been used", Toast.LENGTH_LONG).show();
+//                        return false;
+//                    } else if (!(this.getObjectId().equals(p.getObjectId()))){
+//                        Toast.makeText(context, "Code has already been used", Toast.LENGTH_LONG).show();
+//                        return false;
+//                    }
+//                }
+//            }
+//            return true;
+//        }
+//    }
 
-    public boolean checkColor(Context context, String color, List<Project> projectList){
-        try {
-            Color.parseColor(color);
-        } catch (IllegalArgumentException e){
-            Util.showInvalidColorError(context);
-            return false;
-        }
-        for (Project p : projectList){
-            if (color.equals(p.getColor())){
-                if (null == this.getObjectId()) {
-                    Util.showSameColorError(context);
-                    return false;
-                } else if (!(this.getObjectId().equals(p.getObjectId()))){
-                    Util.showSameColorError(context);
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+//    public boolean checkColor(Context context, String color, List<Project> projectList){
+//        try {
+//            Color.parseColor(color);
+//        } catch (IllegalArgumentException e){
+//            Util.showInvalidColorError(context);
+//            return false;
+//        }
+//        for (Project p : projectList){
+//            if (color.equals(p.getColor())){
+//                if (null == this.getObjectId()) {
+//                    Util.showSameColorError(context);
+//                    return false;
+//                } else if (!(this.getObjectId().equals(p.getObjectId()))){
+//                    Util.showSameColorError(context);
+//                    return false;
+//                }
+//            }
+//        }
+//        return true;
+//    }
 
     public String getName(){
         return getString(NAME);

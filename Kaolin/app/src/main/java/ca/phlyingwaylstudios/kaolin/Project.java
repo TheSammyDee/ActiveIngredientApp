@@ -5,13 +5,12 @@ import android.graphics.Color;
 import android.widget.Toast;
 
 import com.parse.ParseClassName;
-import com.parse.ParseObject;
 
 import java.util.Date;
 import java.util.List;
 
 @ParseClassName("Project")
-public class Project extends ParseObject {
+public class Project extends KaolinObject {
 
     private static final String LOG_TAG = "Project";
     public static final String ID = "objectId";
@@ -21,8 +20,11 @@ public class Project extends ParseObject {
     public static final String START_DATE = "startDate";
     public static final String END_DATE = "endDate";
 
-    public boolean setUpProject(Context context, String name, String code, String color, Date startDate, List<Project> projectList){
-        if (checkName(context, name, projectList) && checkCode(context, code, projectList) && checkColor(context, color, projectList)){
+    public boolean setUpProject(Context context, String name, String code, String color,
+                                Date startDate, List<Project> projectList){
+        //if (checkName(context, name, projectList) && checkCode(context, code, projectList) && checkColor(context, color, projectList)){
+        if (checkString(context, name, KaolinObject.NAME, projectList) &&
+                checkString(context, code, KaolinObject.CODE, projectList)){
             setName(name);
             setCode(code);
             setColor(color);

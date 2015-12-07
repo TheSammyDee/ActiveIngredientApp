@@ -54,7 +54,7 @@ public class EditPhases extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_phases);
         Intent i = getIntent();
-        isNew = i.getBooleanExtra("isNew", false);
+        isNew = i.getBooleanExtra(Util.IS_NEW, false);
         nameEditTxt = (EditText) findViewById(R.id.nameEditTxt);
         colorSwatch = (FrameLayout) findViewById(R.id.colorSwatch);
         redSeekBar = (SeekBar) findViewById(R.id.redSeekBar);

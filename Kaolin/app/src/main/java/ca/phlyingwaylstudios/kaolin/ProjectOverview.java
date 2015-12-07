@@ -93,7 +93,7 @@ public class ProjectOverview extends AppCompatActivity {
                 String projectId = data.getExtras().getString(Project.ID);
                 Intent phaseIntent = new Intent(this, EditPhases.class);
                 phaseIntent.putExtra(Project.ID, projectId);
-                phaseIntent.putExtra("isNew", true);
+                phaseIntent.putExtra(Util.IS_NEW, true);
                 startActivityForResult(phaseIntent, NEW_PHASES_REQUEST);
             }
         } else if (requestCode == NEW_PHASES_REQUEST){

@@ -105,8 +105,8 @@ public class Phase extends ParseObject {
         put(END_DATE, Util.removeTime(date));
     }
 
-    public ParseObject getProject(){
-        return getParseObject(PROJECT);
+    public Project getProject(){
+        return (Project)getParseObject(PROJECT);
     }
 
     public void setProject(Project project){

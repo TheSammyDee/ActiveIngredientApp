@@ -3,6 +3,7 @@ package ca.phlyingwaylstudios.kaolin;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -46,23 +47,43 @@ public class Task extends ParseObject {
         put(SKIP_WEEKENDS, bool);
     }
 
-    public ParseObject getProject(){
-        return getParseObject(PROJECT);
+    public Project getProject(){
+        return (Project)getParseObject(PROJECT);
     }
 
     public void setProject(Project project){
         put(PROJECT, project);
     }
 
-    public ParseObject getPhase(){
-        return getParseObject(PHASE);
+    public Phase getPhase(){
+        return (Phase)getParseObject(PHASE);
     }
 
     public void setPhase(Phase phase){
         put(PHASE, phase);
     }
 
-//    public Array getStartDates(){
-//    }
+    public ArrayList<Date> getStartDates(){
+        return (ArrayList<Date>)get(START_DATES);
+    }
+
+    public void setStartDates(ArrayList<Date> startDates){
+        put(START_DATES, startDates);
+    }
+
+    public void addStartDate(Date date){
+        add(START_DATES, Util.removeTime(date));
+    }
+    public ArrayList<Date> getEndDates(){
+        return (ArrayList<Date>)get(END_DATES);
+    }
+
+    public void setEndDates(ArrayList<Date> endDates){
+        put(END_DATES, endDates);
+    }
+
+    public void addEndDate(Date date){
+        add(END_DATES, Util.removeTime(date));
+    }
 
 }

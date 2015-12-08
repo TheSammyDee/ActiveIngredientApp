@@ -1,7 +1,6 @@
 package ca.phlyingwaylstudios.kaolin;
 
 import com.parse.ParseClassName;
-import com.parse.ParseObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,15 +10,15 @@ import java.util.Date;
  */
 
 @ParseClassName("Task")
-public class Task extends ParseObject {
+public class Task extends KaolinObject{
 
     private static final String LOG_TAG =  "Task";
-    public static final String ID = "objectId";
-    public static final String NAME = "name";
+//    public static final String ID = "objectId";
+//    public static final String NAME = "name";
     public static final String PROJECTED_END = "projectedEnd";
     public static final String SKIP_WEEKENDS = "skipWeekends";
-    public static final String PROJECT = "project";
-    public static final String PHASE = "phase";
+//    public static final String PROJECT = "project";
+//    public static final String PHASE = "phase";
     public static final String START_DATES = "startDates";
     public static final String END_DATES = "endDates";
 
@@ -84,6 +83,10 @@ public class Task extends ParseObject {
 
     public void addEndDate(Date date){
         add(END_DATES, Util.removeTime(date));
+    }
+
+    public String toString(){
+        return getName();
     }
 
 }

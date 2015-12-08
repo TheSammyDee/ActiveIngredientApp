@@ -1,24 +1,23 @@
 package ca.phlyingwaylstudios.kaolin;
 
 import com.parse.ParseClassName;
-import com.parse.ParseObject;
 
 /**
  * Created by il on 06/12/2015.
  */
 
 @ParseClassName("Assignment")
-public class Assignment extends ParseObject{
+public class Assignment extends KaolinObject{
 
     private static final String LOG_TAG = "Assignment";
-    public static final String ID = "objectId";
+//    public static final String ID = "objectId";
     public static final String BUDGETED_HOURS = "budgetedHours";
     public static final String HOURS_REMAINING = "hoursRemaining";
-    public static final String TASK = "task";
-    public static final String ROLE = "role";
-    public static final String PERSON = "person";
-    public static final String PROJECT = "project";
-    public static final String PHASE = "phase";
+//    public static final String TASK = "task";
+//    public static final String ROLE = "role";
+//    public static final String PERSON = "person";
+//    public static final String PROJECT = "project";
+//    public static final String PHASE = "phase";
 
     public Float getBudgetedHours(){
         return (Float)getNumber(BUDGETED_HOURS);

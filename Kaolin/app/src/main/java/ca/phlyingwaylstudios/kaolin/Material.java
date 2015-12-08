@@ -1,22 +1,21 @@
 package ca.phlyingwaylstudios.kaolin;
 
 import com.parse.ParseClassName;
-import com.parse.ParseObject;
 
 /**
  * Created by il on 06/12/2015.
  */
 
 @ParseClassName("Material")
-public class Material extends ParseObject{
+public class Material extends KaolinObject{
 
     private static final String LOG_TAG = "Material";
-    public static final String ID = "objectId";
-    public static final String NAME = "name";
+//    public static final String ID = "objectId";
+//    public static final String NAME = "name";
     public static final String BUDGETED_COST = "budgetedCost";
-    public static final String TASK = "task";
-    public static final String PROJECT = "project";
-    public static final String PHASE = "phase";
+//    public static final String TASK = "task";
+//    public static final String PROJECT = "project";
+//    public static final String PHASE = "phase";
 
     public String getName(){
         return getString(NAME);
@@ -56,5 +55,9 @@ public class Material extends ParseObject{
 
     public void setPhase(Phase phase){
         put(PHASE, phase);
+    }
+
+    public String toString(){
+        return getName();
     }
 }

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,7 +23,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class NewProject extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener, AdapterView.OnItemSelectedListener, View.OnClickListener{
+public class NewProject extends AppCompatActivity
+        implements SeekBar.OnSeekBarChangeListener,
+        AdapterView.OnItemSelectedListener,
+        View.OnClickListener{
 
     private static final String LOG_TAG = "NewProject";
     private EditText nameEditTxt;

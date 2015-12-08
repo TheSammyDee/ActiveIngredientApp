@@ -20,6 +20,10 @@ public class KaolinObject extends ParseObject{
     public static final String START_DATE = "startDate";
     public static final String END_DATE = "endDate";
     public static final String PROJECT = "project";
+    public static final String PHASE = "phase";
+    public static final String TASK = "task";
+    public static final String ROLE = "role";
+    public static final String PERSON = "person";
 
     public boolean checkString(Context context, String testString, String key, List<? extends KaolinObject> list){
         if (null == testString || testString.isEmpty()){

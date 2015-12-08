@@ -11,12 +11,12 @@ import java.util.List;
 public class Phase extends KaolinObject {
 
     private static final String LOG_TAG = "Phase";
-    public static final String ID = "objectId";
-    public static final String NAME = "name";
-    public static final String COLOR = "color";
-    public static final String START_DATE = "startDate";
-    public static final String END_DATE = "endDate";
-    public static final String PROJECT = "project";
+//    public static final String ID = "objectId";
+//    public static final String NAME = "name";
+//    public static final String COLOR = "color";
+//    public static final String START_DATE = "startDate";
+//    public static final String END_DATE = "endDate";
+//    public static final String PROJECT = "project";
 
     public boolean setUpPhase(Context context, String name, String color, List<Phase> phaseList){
         if (checkString(context, name, NAME, phaseList)&&
@@ -109,5 +109,9 @@ public class Phase extends KaolinObject {
 
     public void setProject(Project project){
         put(PROJECT, project);
+    }
+
+    public String toString(){
+        return getName();
     }
 }

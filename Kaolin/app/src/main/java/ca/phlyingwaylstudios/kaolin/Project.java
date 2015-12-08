@@ -11,12 +11,12 @@ import java.util.List;
 public class Project extends KaolinObject {
 
     private static final String LOG_TAG = "Project";
-    public static final String ID = "objectId";
-    public static final String NAME = "name";
-    public static final String CODE = "code";
-    public static final String COLOR = "color";
-    public static final String START_DATE = "startDate";
-    public static final String END_DATE = "endDate";
+//    public static final String ID = "objectId";
+//    public static final String NAME = "name";
+//    public static final String CODE = "code";
+//    public static final String COLOR = "color";
+//    public static final String START_DATE = "startDate";
+//    public static final String END_DATE = "endDate";
 
     public boolean setUpProject(Context context, String name, String code, String color,
                                 Date startDate, List<Project> projectList){

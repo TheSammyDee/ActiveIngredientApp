@@ -1,6 +1,7 @@
 package ca.phlyingwaylstudios.kaolin;
 
 import com.parse.ParseClassName;
+import com.parse.ParseObject;
 
 /**
  * Created by il on 06/12/2015.
@@ -40,7 +41,7 @@ public class Assignment extends KaolinObject{
     }
 
     public void setTask(Task task){
-        put(TASK, task);
+        put(TASK, ParseObject.createWithoutData(Task.class, task.getObjectId()));
     }
 
     public Role getRole(){
@@ -48,7 +49,7 @@ public class Assignment extends KaolinObject{
     }
 
     public void setRole(Role role){
-        put(ROLE, role);
+        put(ROLE, ParseObject.createWithoutData(Role.class, role.getObjectId()));
     }
 
     public Person getPerson(){
@@ -56,7 +57,7 @@ public class Assignment extends KaolinObject{
     }
 
     public void setPerson(Person person){
-        put(PERSON, person);
+        put(PERSON, ParseObject.createWithoutData(Person.class, person.getObjectId()));
     }
 
     public Project getProject(){
@@ -64,7 +65,7 @@ public class Assignment extends KaolinObject{
     }
 
     public void setProject(Project project){
-        put(PROJECT, project);
+        put(PROJECT, ParseObject.createWithoutData(Project.class, project.getObjectId()));
     }
 
     public Phase getPhase(){
@@ -72,6 +73,6 @@ public class Assignment extends KaolinObject{
     }
 
     public void setPhase(Phase phase){
-        put(PHASE, phase);
+        put(PHASE, ParseObject.createWithoutData(Phase.class, phase.getObjectId()));
     }
 }

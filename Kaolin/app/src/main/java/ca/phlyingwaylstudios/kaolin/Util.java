@@ -45,6 +45,10 @@ public class Util {
         Toast.makeText(context, "Color has already been used", Toast.LENGTH_LONG).show();
     }
 
+    public static void showDateOrderError(Context context){
+        Toast.makeText(context, "End date must be after start date", Toast.LENGTH_LONG).show();
+    }
+
     public static Date removeTime(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);

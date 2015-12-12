@@ -22,7 +22,8 @@ public class Project extends KaolinObject {
                                 Date startDate, List<Project> projectList){
         //if (checkName(context, name, projectList) && checkCode(context, code, projectList) && checkColor(context, color, projectList)){
         if (checkString(context, name, NAME, projectList) &&
-                checkString(context, code, CODE, projectList)){
+                checkString(context, code, CODE, projectList) &&
+                checkColor(context, color, projectList)){
             setName(name);
             setCode(code);
             setColor(color);

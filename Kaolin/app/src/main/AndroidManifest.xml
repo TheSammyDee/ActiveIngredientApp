@@ -30,7 +30,10 @@
             android:name=".EditPhases"
             android:label="Edit Phases"
             android:parentActivityName=".ProjectOverview" />
-        <activity android:name=".AddTasks"></activity>
+        <activity
+            android:name=".AddTasks"
+            android:label="Add Tasks"
+            android:parentActivityName=".ProjectOverview"/>
     </application>
 
 </manifest>

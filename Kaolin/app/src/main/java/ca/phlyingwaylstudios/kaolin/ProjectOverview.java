@@ -99,10 +99,10 @@ public class ProjectOverview extends AppCompatActivity {
         } else if (requestCode == NEW_PHASES_REQUEST){
             if (resultCode == RESULT_OK){
                 String projectId = data.getExtras().getString(Project.ID);
-//                Intent tasksIntent = new Intent(this, EditTasks.class);
-//                tasksIntent.putExtra(Project.ID, projectId);
-//                tasksIntent.putExtra("isNew"), true);
-//                startActivityForResult(tasksIntent, NEW_TASKS_REQUEST);
+                Intent tasksIntent = new Intent(this, AddTasks.class);
+                tasksIntent.putExtra(Project.ID, projectId);
+                tasksIntent.putExtra(Util.IS_NEW, true);
+                startActivityForResult(tasksIntent, NEW_TASKS_REQUEST);
             }
         }
     }

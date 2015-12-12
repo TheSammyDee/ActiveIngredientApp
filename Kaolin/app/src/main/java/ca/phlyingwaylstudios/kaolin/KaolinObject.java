@@ -5,6 +5,8 @@ import android.graphics.Color;
 
 import com.parse.ParseObject;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,8 +26,10 @@ public class KaolinObject extends ParseObject{
     public static final String TASK = "task";
     public static final String ROLE = "role";
     public static final String PERSON = "person";
+    protected Date startDateHolder;
+    protected Date endDateHolder;
 
-    public boolean checkString(Context context, String testString, String key, List<? extends KaolinObject> list){
+    protected boolean checkString(Context context, String testString, String key, List<? extends KaolinObject> list){
         if (null == testString || testString.isEmpty()){
             Util.showEmptyError(context, key);
             return false;
@@ -46,7 +50,7 @@ public class KaolinObject extends ParseObject{
         }
     }
 
-    public boolean checkColor(Context context, String color, List<? extends KaolinObject> list){
+    protected boolean checkColor(Context context, String color, List<? extends KaolinObject> list){
         try {
             Color.parseColor(color);
         } catch (IllegalArgumentException e){
@@ -66,4 +70,42 @@ public class KaolinObject extends ParseObject{
         }
         return true;
     }
+
+    protected boolean checkDates(Context context, Date startDate, Date endDate){
+        if (startDate.after(endDate)){
+            Util.showDateOrderError(context);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    protected void adjustForWeekends(){
+        Calendar startCal = Calendar.getInstance();
+        Calendar endCal = Calendar.getInstance();
+        startCal.setTime(startDateHolder);
+        endCal.setTime(endDateHolder);
+        if (startCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY){
+            startCal.add(Calendar.DATE, 2);
+        } else if (startCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
+            startCal.add(Calendar.DATE, 1);
+        }
+        if (endCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY){
+            endCal.add(Calendar.DATE, -1);
+        } else if (endCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
+            endCal.add(Calendar.DATE, -2);
+        }
+        startDateHolder = startCal.getTime();
+        endDateHolder = endCal.getTime();
+    }
+
+//    public List<?> collectConnected(String key, List<? extends KaolinObject> list){
+//        List<KaolinObject> newList = new ArrayList<KaolinObject>();
+//        for (int i = 0; i < list.size(); i++){
+//            if (list.get(i).getParseObject(key) == this){
+//                newList.add(list.get(i));
+//            }
+//        }
+//        return newList;
+//    }
 }

@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.parse.FindCallback;
@@ -14,7 +16,7 @@ import com.parse.ParseQuery;
 
 import java.util.List;
 
-public class ProjectOverview extends AppCompatActivity {
+public class ProjectOverview extends AppCompatActivity implements ListView.OnItemClickListener{
 
     private static final String LOG_TAG = "ProjectOverview";
     private static final int SETUP_REQUEST = 1;
@@ -33,6 +35,7 @@ public class ProjectOverview extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         projectListView = (ListView) findViewById(R.id.projectListView);
+        projectListView.setOnItemClickListener(this);
 
         ParseQuery<Project> query = ParseQuery.getQuery(Project.class);
         query.orderByAscending(Project.END_DATE);
@@ -122,4 +125,11 @@ public class ProjectOverview extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent tasksIntent = new Intent(this, AddTasks.class);
+        tasksIntent.putExtra(Project.ID, projectList.get(position).getObjectId());
+        tasksIntent.putExtra(Util.IS_NEW, false);
+        startActivityForResult(tasksIntent, NEW_TASKS_REQUEST);
+    }
 }

@@ -26,6 +26,7 @@ public class KaolinObject extends ParseObject{
     public static final String TASK = "task";
     public static final String ROLE = "role";
     public static final String PERSON = "person";
+    public static final String RATE = "rate";
     protected Date startDateHolder;
     protected Date endDateHolder;
 

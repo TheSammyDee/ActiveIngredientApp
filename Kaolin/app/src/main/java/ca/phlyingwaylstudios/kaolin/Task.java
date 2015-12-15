@@ -58,6 +58,7 @@ public class Task extends KaolinObject{
         for (int i = 0; i < list.size(); i++){
             if (list.get(i).getParseObject(TASK) == this){
                 newList.add(list.get(i));
+                newList.get(newList.size()-1).tempHoldingIndex = i;
             }
         }
         return newList;
@@ -68,6 +69,7 @@ public class Task extends KaolinObject{
         for (int i = 0; i < list.size(); i++){
             if (list.get(i).getParseObject(TASK) == this){
                 newList.add(list.get(i));
+                newList.get(newList.size()-1).tempHoldingIndex = i;
             }
         }
         return newList;

@@ -190,7 +190,7 @@
                     <EditText
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         android:ems="10"
                         android:id="@+id/hoursEditTxt"
                         android:layout_weight="1"
@@ -199,7 +199,7 @@
                     <EditText
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         android:ems="10"
                         android:id="@+id/rateEditTxt"
                         android:layout_weight="1"

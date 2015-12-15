@@ -1,19 +1,18 @@
 package ca.phlyingwaylstudios.kaolin;
 
 import com.parse.ParseClassName;
-import com.parse.ParseObject;
 
 /**
  * Created by il on 06/12/2015.
  */
 
 @ParseClassName("Role")
-public class Role extends ParseObject{
+public class Role extends KaolinObject{
 
     private static final String LOG_TAG = "Role";
-    public static final String ID = "objectId";
-    public static final String NAME = "name";
-    public static final String RATE = "rate";
+    //public static final String ID = "objectId";
+    //public static final String NAME = "name";
+    //public static final String RATE = "rate";
 
     public String getName(){
         return getString(NAME);

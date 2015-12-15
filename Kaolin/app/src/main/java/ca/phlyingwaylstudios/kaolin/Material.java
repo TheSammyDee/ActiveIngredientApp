@@ -1,6 +1,10 @@
 package ca.phlyingwaylstudios.kaolin;
 
+import android.content.Context;
+
 import com.parse.ParseClassName;
+
+import java.util.List;
 
 /**
  * Created by il on 06/12/2015.
@@ -16,6 +20,21 @@ public class Material extends KaolinObject{
 //    public static final String TASK = "task";
 //    public static final String PROJECT = "project";
 //    public static final String PHASE = "phase";
+    public int tempHoldingIndex = 0;
+
+    public boolean setUpMaterial(Context context, String name, float cost, Task task,
+                                 Project project, Phase phase, List<Material> materialList){
+        if (checkString(context, name, NAME, materialList)){
+            setName(name);
+            setBudgetedCost(cost);
+            setTask(task);
+            setProject(project);
+            setPhase(phase);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public String getName(){
         return getString(NAME);
@@ -25,11 +44,11 @@ public class Material extends KaolinObject{
         put(NAME, value);
     }
 
-    public Float getBudgetedCost(){
-        return (Float)getNumber(BUDGETED_COST);
+    public float getBudgetedCost(){
+        return (float) getNumber(BUDGETED_COST);
     }
 
-    public void setBudgetedCost(Number cost){
+    public void setBudgetedCost(float cost){
         put(BUDGETED_COST, cost);
     }
 

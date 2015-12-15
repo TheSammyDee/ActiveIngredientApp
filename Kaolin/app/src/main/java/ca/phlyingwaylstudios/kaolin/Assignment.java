@@ -1,5 +1,7 @@
 package ca.phlyingwaylstudios.kaolin;
 
+import android.content.Context;
+
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
@@ -19,21 +21,43 @@ public class Assignment extends KaolinObject{
 //    public static final String PERSON = "person";
 //    public static final String PROJECT = "project";
 //    public static final String PHASE = "phase";
+    public int tempHoldingIndex = 0;
 
-    public Float getBudgetedHours(){
-        return (Float)getNumber(BUDGETED_HOURS);
+    public boolean setUpAssignment(Context context, Person person, Role role, float hours,
+                                   float rate, Task task, Project project, Phase phase){
+        setPerson(person);
+        setRole(role);
+        setBudgetedHours(hours);
+        setHoursRemaining(hours);
+        setRate(rate);
+        setTask(task);
+        setProject(project);
+        setPhase(phase);
+        return true;
+    }
+
+    public float getBudgetedHours(){
+        return (float)getNumber(BUDGETED_HOURS);
     }
 
     public void setBudgetedHours(Number hours){
         put(BUDGETED_HOURS, hours);
     }
 
-    public Float getHoursRemaining(){
-        return (Float)getNumber(HOURS_REMAINING);
+    public float getHoursRemaining(){
+        return (float)getNumber(HOURS_REMAINING);
     }
 
     public void setHoursRemaining(Number hours){
         put(HOURS_REMAINING, hours);
+    }
+
+    public float getRate(){
+        return (float)getNumber(RATE);
+    }
+
+    public void setRate(Number rate){
+        put(RATE, rate);
     }
 
     public Task getTask(){

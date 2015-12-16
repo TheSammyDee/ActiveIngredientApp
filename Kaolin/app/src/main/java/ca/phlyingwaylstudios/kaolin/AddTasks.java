@@ -19,6 +19,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -34,7 +36,7 @@ import java.util.List;
 public class AddTasks extends AppCompatActivity
         implements View.OnClickListener,
         ListView.OnItemClickListener,
-        AdapterView.OnItemSelectedListener{
+        AdapterView.OnItemSelectedListener {
 
     private static final String LOG_TAG = "AddTasks";
     private ListView taskListView;
@@ -97,6 +99,11 @@ public class AddTasks extends AppCompatActivity
     private AlertDialog taskDeleteAlert;
     private AlertDialog assignmentDeleteAlert;
     private AlertDialog materialDeleteAlert;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,37 +139,40 @@ public class AddTasks extends AppCompatActivity
                 }
             }
         });
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    private void getViews(){
-        taskListView = (ListView)findViewById(R.id.taskListView);
-        taskNameEditTxt = (EditText)findViewById(R.id.nameEditTxt);
-        phaseSpinner = (Spinner)findViewById(R.id.phaseSpinner);
-        fromDateEtxt = (EditText)findViewById(R.id.fromDateEtxt);
-        toDateEtxt = (EditText)findViewById(R.id.toDateEtxt);
-        skipWeekendsCheckbox = (CheckBox)findViewById(R.id.skipWeekendsCheckbox);
-        unscheduledCheckbox = (CheckBox)findViewById(R.id.unscheduledCheckbox);
-        newTaskBtn = (Button)findViewById(R.id.newTaskBtn);
-        saveTaskBtn = (Button)findViewById(R.id.saveTaskBtn);
-        finishButton = (Button)findViewById(R.id.finishBtn);
-        newAssignBtn = (Button)findViewById(R.id.newAssignBtn);
-        saveAssignBtn = (Button)findViewById(R.id.saveAssignBtn);
-        deleteTaskBtn = (Button)findViewById(R.id.deleteTaskBtn);
-        deleteAssignBtn = (Button)findViewById(R.id.deleteAssignBtn);
-        deleteMatBtn = (Button)findViewById(R.id.deleteMatBtn);
-        roleSpinner = (Spinner)findViewById(R.id.roleSpinner);
-        personSpinner = (Spinner)findViewById(R.id.personSpinner);
-        hoursEditTxt = (EditText)findViewById(R.id.hoursEditTxt);
+    private void getViews() {
+        taskListView = (ListView) findViewById(R.id.taskListView);
+        taskNameEditTxt = (EditText) findViewById(R.id.nameEditTxt);
+        phaseSpinner = (Spinner) findViewById(R.id.phaseSpinner);
+        fromDateEtxt = (EditText) findViewById(R.id.fromDateEtxt);
+        toDateEtxt = (EditText) findViewById(R.id.toDateEtxt);
+        skipWeekendsCheckbox = (CheckBox) findViewById(R.id.skipWeekendsCheckbox);
+        unscheduledCheckbox = (CheckBox) findViewById(R.id.unscheduledCheckbox);
+        newTaskBtn = (Button) findViewById(R.id.newTaskBtn);
+        saveTaskBtn = (Button) findViewById(R.id.saveTaskBtn);
+        finishButton = (Button) findViewById(R.id.finishBtn);
+        newAssignBtn = (Button) findViewById(R.id.newAssignBtn);
+        saveAssignBtn = (Button) findViewById(R.id.saveAssignBtn);
+        deleteTaskBtn = (Button) findViewById(R.id.deleteTaskBtn);
+        deleteAssignBtn = (Button) findViewById(R.id.deleteAssignBtn);
+        deleteMatBtn = (Button) findViewById(R.id.deleteMatBtn);
+        roleSpinner = (Spinner) findViewById(R.id.roleSpinner);
+        personSpinner = (Spinner) findViewById(R.id.personSpinner);
+        hoursEditTxt = (EditText) findViewById(R.id.hoursEditTxt);
         rateEditTxt = (EditText) findViewById(R.id.rateEditTxt);
         assignmentListView = (ListView) findViewById(R.id.assignmentsListView);
         newMatBtn = (Button) findViewById(R.id.newMatBtn);
         saveMatBtn = (Button) findViewById(R.id.saveMatBtn);
         matNameEditTxt = (EditText) findViewById(R.id.matNameEditTxt);
-        matCostEditTxt = (EditText)findViewById(R.id.matCostEditTxt);
-        materialListView = (ListView)findViewById(R.id.materialsListView);
+        matCostEditTxt = (EditText) findViewById(R.id.matCostEditTxt);
+        materialListView = (ListView) findViewById(R.id.materialsListView);
     }
 
-    private void setListeners(){
+    private void setListeners() {
         newTaskBtn.setOnClickListener(this);
         saveTaskBtn.setOnClickListener(this);
         finishButton.setOnClickListener(this);
@@ -180,7 +190,7 @@ public class AddTasks extends AppCompatActivity
         toDateEtxt.setOnClickListener(this);
     }
 
-    private void setUpDatePickers(){
+    private void setUpDatePickers() {
         dateFormat = new SimpleDateFormat("dd-MM-yyy");
         Calendar cal = Calendar.getInstance();
         fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -205,7 +215,7 @@ public class AddTasks extends AppCompatActivity
         endDate = new Date();
     }
 
-    private void setUpTaskAlert(){
+    private void setUpTaskAlert() {
         AlertDialog.Builder taskDelBuilder = new AlertDialog.Builder(AddTasks.this);
         taskDelBuilder.setTitle(R.string.app_name);
         taskDelBuilder.setMessage("Delete task " + currentTask.getName() + "?");
@@ -224,7 +234,7 @@ public class AddTasks extends AppCompatActivity
         taskDeleteAlert.show();
     }
 
-    private void setUpAssignmentAlert(){
+    private void setUpAssignmentAlert() {
         AlertDialog.Builder assignDelBuilder = new AlertDialog.Builder(AddTasks.this);
         assignDelBuilder.setTitle(R.string.app_name);
         assignDelBuilder.setMessage("Delete assignment for " + currentAssignment.getPerson().getName() + "?");
@@ -243,7 +253,7 @@ public class AddTasks extends AppCompatActivity
         assignmentDeleteAlert.show();
     }
 
-    private void setUpMaterialAlert(){
+    private void setUpMaterialAlert() {
         AlertDialog.Builder matDelBuilder = new AlertDialog.Builder(AddTasks.this);
         matDelBuilder.setTitle(R.string.app_name);
         matDelBuilder.setMessage("Delete material " + currentMaterial.getName() + "?");
@@ -262,7 +272,7 @@ public class AddTasks extends AppCompatActivity
         materialDeleteAlert.show();
     }
 
-    private void getPhases(){
+    private void getPhases() {
         ParseQuery<Phase> query = ParseQuery.getQuery(Phase.class);
         query.whereEqualTo(Phase.PROJECT, currentProject);
         query.orderByAscending(Phase.START_DATE);
@@ -271,7 +281,7 @@ public class AddTasks extends AppCompatActivity
             public void done(List<Phase> objects, ParseException e) {
                 if (null == e) {
                     phaseList = objects;
-                    for (Phase p : phaseList){
+                    for (Phase p : phaseList) {
                         Log.d(LOG_TAG, "phase " + p.getName());
                         phaseNames.add(p.getName());
                     }
@@ -283,14 +293,14 @@ public class AddTasks extends AppCompatActivity
         });
     }
 
-    private void getPersons(){
+    private void getPersons() {
         ParseQuery<Person> query = ParseQuery.getQuery(Person.class);
         query.findInBackground(new FindCallback<Person>() {
             @Override
             public void done(List<Person> objects, ParseException e) {
-                if (null == e){
+                if (null == e) {
                     personList = objects;
-                    for (Person p : personList){
+                    for (Person p : personList) {
                         personNames.add(p.getName());
                     }
                     getRoles();
@@ -301,17 +311,17 @@ public class AddTasks extends AppCompatActivity
         });
     }
 
-    private void getRoles(){
+    private void getRoles() {
         ParseQuery<Role> query = ParseQuery.getQuery(Role.class);
         query.findInBackground(new FindCallback<Role>() {
             @Override
             public void done(List<Role> objects, ParseException e) {
-                if (null == e){
+                if (null == e) {
                     roleList = objects;
-                    for (Role r : roleList){
+                    for (Role r : roleList) {
                         roleNames.add(r.getName());
                     }
-                    if (isNew){
+                    if (isNew) {
                         finishSetup();
                     } else {
                         getAssignments();
@@ -323,7 +333,7 @@ public class AddTasks extends AppCompatActivity
         });
     }
 
-    private void getAssignments(){
+    private void getAssignments() {
         ParseQuery<Assignment> query = ParseQuery.getQuery(Assignment.class);
         query.whereEqualTo(Assignment.PROJECT, currentProject);
         query.findInBackground(new FindCallback<Assignment>() {
@@ -339,7 +349,7 @@ public class AddTasks extends AppCompatActivity
         });
     }
 
-    private void getMaterials(){
+    private void getMaterials() {
         ParseQuery<Material> query = ParseQuery.getQuery(Material.class);
         query.whereEqualTo(Material.PROJECT, currentProject);
         query.findInBackground(new FindCallback<Material>() {
@@ -355,7 +365,7 @@ public class AddTasks extends AppCompatActivity
         });
     }
 
-    private void getTasks(){
+    private void getTasks() {
         ParseQuery<Task> query = ParseQuery.getQuery(Task.class);
         query.whereEqualTo(Task.PROJECT, currentProject);
         query.findInBackground(new FindCallback<Task>() {
@@ -371,7 +381,7 @@ public class AddTasks extends AppCompatActivity
         });
     }
 
-    private void finishSetup(){
+    private void finishSetup() {
         phaseAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, phaseNames);
         phaseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -399,7 +409,7 @@ public class AddTasks extends AppCompatActivity
         }
     }
 
-    public void createNewTask(){
+    public void createNewTask() {
         taskNum = taskList.size();
         currentTask = new Task();
         currentTask.setName("Task " + (taskNum + 1));
@@ -430,13 +440,13 @@ public class AddTasks extends AppCompatActivity
         clearMaterialFields();
     }
 
-    private void populateTaskFields(){
+    private void populateTaskFields() {
         taskNameEditTxt.setText(currentTask.getName());
         currentPhase = currentTask.getPhase();
         phaseSpinner.setSelection(phaseList.indexOf(currentPhase), true);
         skipWeekendsCheckbox.setChecked(currentTask.getSkipWeekends());
         unscheduledCheckbox.setChecked(currentTask.getUnscheduled());
-        if (currentTask.getUnscheduled()){
+        if (currentTask.getUnscheduled()) {
             toDateEtxt.setText("");
             fromDateEtxt.setText("");
         } else {
@@ -447,7 +457,7 @@ public class AddTasks extends AppCompatActivity
             assignmentList = currentTask.collectAssignments(allAssignmentsList);
             buildAssignmentAdapter();
         }
-        if (allMaterialsList.size() > 0){
+        if (allMaterialsList.size() > 0) {
             materialList = currentTask.collectMaterials(allMaterialsList);
             buildMaterialAdapter();
         }
@@ -457,19 +467,19 @@ public class AddTasks extends AppCompatActivity
         refreshMaterialList();
     }
 
-    private void populateAssignmentFields(){
+    private void populateAssignmentFields() {
         personSpinner.setSelection(personList.indexOf(currentAssignment.getPerson()));
         roleSpinner.setSelection(roleList.indexOf(currentAssignment.getRole()));
         hoursEditTxt.setText(Double.toString(currentAssignment.getBudgetedHours()));
         rateEditTxt.setText(Double.toString(currentAssignment.getRate()));
     }
 
-    private void populateMaterialFields(){
+    private void populateMaterialFields() {
         matNameEditTxt.setText(currentMaterial.getName());
         matCostEditTxt.setText(Double.toString(currentMaterial.getBudgetedCost()));
     }
 
-    private void clearAssignmentFields(){
+    private void clearAssignmentFields() {
         assignmentNum = assignmentList.size();
         currentAssignment = new Assignment();
         personSpinner.setSelection(0, true);
@@ -478,25 +488,25 @@ public class AddTasks extends AppCompatActivity
         rateEditTxt.setText("");
     }
 
-    private void clearMaterialFields(){
+    private void clearMaterialFields() {
         materialNum = materialList.size();
         currentMaterial = new Material();
         matCostEditTxt.setText("");
         matNameEditTxt.setText("");
     }
 
-    private void buildTaskAdapter(){
+    private void buildTaskAdapter() {
         taskAdapter = new ArrayAdapter<Task>(this,
                 android.R.layout.simple_list_item_1, taskList);
     }
 
-    public void refreshTaskList(){
+    public void refreshTaskList() {
         taskListView.setAdapter(taskAdapter);
     }
 
-    private void buildAssignmentAdapter(){
+    private void buildAssignmentAdapter() {
         assignmentAdapter = new ArrayAdapter<Assignment>(this,
-                android.R.layout.simple_list_item_2, android.R.id.text1, assignmentList){
+                android.R.layout.simple_list_item_2, android.R.id.text1, assignmentList) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
@@ -510,20 +520,20 @@ public class AddTasks extends AppCompatActivity
         };
     }
 
-    private void refreshAssignmentList(){
+    private void refreshAssignmentList() {
         assignmentListView.setAdapter(assignmentAdapter);
     }
 
-    private void buildMaterialAdapter(){
+    private void buildMaterialAdapter() {
         materialAdapter = new ArrayAdapter<Material>(this,
                 android.R.layout.simple_list_item_1, materialList);
     }
 
-    private void refreshMaterialList(){
+    private void refreshMaterialList() {
         materialListView.setAdapter(materialAdapter);
     }
 
-    private void saveTask(){
+    private void saveTask() {
         String name = taskNameEditTxt.getText().toString();
         currentPhase = phaseList.get(phaseSpinner.getSelectedItemPosition());
         Boolean skip = skipWeekendsCheckbox.isChecked();
@@ -550,27 +560,27 @@ public class AddTasks extends AppCompatActivity
         }
     }
 
-    private void updateChildPhaseSelection(){
-        for (Assignment a : assignmentList){
-            if (!a.getPhase().hasSameId(currentPhase)){
+    private void updateChildPhaseSelection() {
+        for (Assignment a : assignmentList) {
+            if (!a.getPhase().hasSameId(currentPhase)) {
                 a.setPhase(currentPhase);
                 a.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        if (!(null == e)){
+                        if (!(null == e)) {
                             Util.showSaveError(getApplicationContext());
                         }
                     }
                 });
             }
         }
-        for (Material m : materialList){
-            if (!m.getPhase().hasSameId(currentPhase)){
+        for (Material m : materialList) {
+            if (!m.getPhase().hasSameId(currentPhase)) {
                 m.setPhase(currentPhase);
                 m.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        if (!(null == e)){
+                        if (!(null == e)) {
                             Util.showSaveError(getApplicationContext());
                         }
                     }
@@ -579,17 +589,17 @@ public class AddTasks extends AppCompatActivity
         }
     }
 
-    private void saveAssignment(){
+    private void saveAssignment() {
         Person person = personList.get(personSpinner.getSelectedItemPosition());
         Role role = roleList.get(roleSpinner.getSelectedItemPosition());
         String hoursString = hoursEditTxt.getText().toString();
         String rateString = rateEditTxt.getText().toString();
         double hours = 0;
         double rate = 0;
-        if (!hoursString.isEmpty()){
+        if (!hoursString.isEmpty()) {
             hours = Double.valueOf(hoursString);
         }
-        if (!rateString.isEmpty()){
+        if (!rateString.isEmpty()) {
             rate = Double.valueOf(rateString);
         }
         if (currentAssignment.setUpAssignment(getApplicationContext(), person, role, hours, rate,
@@ -617,20 +627,20 @@ public class AddTasks extends AppCompatActivity
         }
     }
 
-    private void saveMaterial(){
+    private void saveMaterial() {
         String name = matNameEditTxt.getText().toString();
         String costString = matCostEditTxt.getText().toString();
         double cost = 0;
-        if (!costString.isEmpty()){
+        if (!costString.isEmpty()) {
             cost = Double.valueOf(costString);
         }
         if (currentMaterial.setUpMaterial(getApplicationContext(), name, cost, currentTask,
-                currentProject, currentPhase, materialList)){
+                currentProject, currentPhase, materialList)) {
             currentMaterial.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
-                    if (null == e){
-                        if (materialNum >= materialList.size()){
+                    if (null == e) {
+                        if (materialNum >= materialList.size()) {
                             materialList.add(currentMaterial);
                             currentMaterial.tempHoldingIndex = allMaterialsList.size();
                             allMaterialsList.add(currentMaterial);
@@ -649,14 +659,14 @@ public class AddTasks extends AppCompatActivity
         }
     }
 
-    private void deleteTask(){
-        for (int i = assignmentList.size()-1; i>-1; i--){
+    private void deleteTask() {
+        for (int i = assignmentList.size() - 1; i > -1; i--) {
             Assignment a = assignmentList.get(i);
             allAssignmentsList.remove(a.tempHoldingIndex);
             assignmentList.remove(i);
             a.deleteInBackground();
         }
-        for (int j = materialList.size()-1; j>-1; j--){
+        for (int j = materialList.size() - 1; j > -1; j--) {
             Material m = materialList.get(j);
             allMaterialsList.remove(m.tempHoldingIndex);
             materialList.remove(j);
@@ -670,9 +680,9 @@ public class AddTasks extends AppCompatActivity
         populateTaskFields();
     }
 
-    private void deleteAssignment(){
-        for (Assignment a : assignmentList){
-            if (a.tempHoldingIndex > currentAssignment.tempHoldingIndex){
+    private void deleteAssignment() {
+        for (Assignment a : assignmentList) {
+            if (a.tempHoldingIndex > currentAssignment.tempHoldingIndex) {
                 a.tempHoldingIndex--;
             }
         }
@@ -683,9 +693,9 @@ public class AddTasks extends AppCompatActivity
         refreshAssignmentList();
     }
 
-    private void deleteMaterial(){
-        for (Material m : materialList){
-            if (m.tempHoldingIndex > currentMaterial.tempHoldingIndex){
+    private void deleteMaterial() {
+        for (Material m : materialList) {
+            if (m.tempHoldingIndex > currentMaterial.tempHoldingIndex) {
                 m.tempHoldingIndex--;
             }
         }
@@ -696,9 +706,53 @@ public class AddTasks extends AppCompatActivity
         refreshMaterialList();
     }
 
+    private void adjustPhaseDates() {
+        ArrayList<Task> tasks;
+        ArrayList<Date> startDates;
+        ArrayList<Date> endDates;
+        Date earliestDate;
+        Date latestDate;
+        Date mostLatestDate = null;
+        for (Phase p : phaseList) {
+            tasks = new ArrayList<Task>();
+            for (Task t : taskList) {
+                if (t.getPhase() == p) {
+                    tasks.add(t);
+                }
+            }
+            if (tasks.size() > 0) {
+                startDates = tasks.get(0).getStartDates();
+                endDates = tasks.get(0).getEndDates();
+                earliestDate = startDates.get(startDates.size() - 1);
+                latestDate = endDates.get(endDates.size() - 1);
+                for (int i = 1; i < tasks.size(); i++) {
+                    startDates = tasks.get(i).getStartDates();
+                    if (startDates.get(startDates.size() - 1).before(earliestDate)) {
+                        earliestDate = startDates.get(startDates.size() - 1);
+                    }
+                    endDates = tasks.get(i).getEndDates();
+                    if (endDates.get(endDates.size() - 1).after(latestDate)) {
+                        latestDate = endDates.get(endDates.size() - 1);
+                    }
+                }
+                p.setStartDate(earliestDate);
+                p.setEndDate(latestDate);
+                p.saveInBackground();
+                if (null == mostLatestDate){
+                    mostLatestDate = latestDate;
+                } else if (latestDate.after(mostLatestDate)){
+                    mostLatestDate = latestDate;
+                }
+            }
+
+        }
+        currentProject.setEndDate(mostLatestDate);
+        currentProject.saveInBackground();
+    }
+
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case (R.id.newTaskBtn):
                 createNewTask();
                 break;
@@ -733,6 +787,7 @@ public class AddTasks extends AppCompatActivity
                 setUpMaterialAlert();
                 break;
             case (R.id.finishBtn):
+                adjustPhaseDates();
                 Intent data = new Intent();
                 setResult(RESULT_OK, data);
                 finish();
@@ -741,7 +796,7 @@ public class AddTasks extends AppCompatActivity
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        switch (parent.getId()){
+        switch (parent.getId()) {
             case (R.id.taskListView):
                 taskNum = position;
                 currentTask = taskList.get(position);

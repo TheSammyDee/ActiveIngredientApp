@@ -56,7 +56,7 @@ public class Task extends KaolinObject{
     public List<Assignment> collectAssignments(List<Assignment> list){
         List<Assignment> newList = new ArrayList<Assignment>();
         for (int i = 0; i < list.size(); i++){
-            if (list.get(i).getParseObject(TASK) == this){
+            if (list.get(i).getTask() == this){
                 newList.add(list.get(i));
                 newList.get(newList.size()-1).tempHoldingIndex = i;
             }
@@ -67,7 +67,7 @@ public class Task extends KaolinObject{
     public List<Material> collectMaterials(List<Material> list){
         List<Material> newList = new ArrayList<Material>();
         for (int i = 0; i < list.size(); i++){
-            if (list.get(i).getParseObject(TASK) == this){
+            if (list.get(i).getTask() == this){
                 newList.add(list.get(i));
                 newList.get(newList.size()-1).tempHoldingIndex = i;
             }

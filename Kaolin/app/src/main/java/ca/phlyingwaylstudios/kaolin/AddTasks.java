@@ -1,6 +1,8 @@
 package ca.phlyingwaylstudios.kaolin;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -47,6 +49,9 @@ public class AddTasks extends AppCompatActivity
     private Button finishButton;
     private Button newAssignBtn;
     private Button saveAssignBtn;
+    private Button deleteTaskBtn;
+    private Button deleteAssignBtn;
+    private Button deleteMatBtn;
     private Spinner roleSpinner;
     private Spinner personSpinner;
     private EditText hoursEditTxt;
@@ -89,69 +94,18 @@ public class AddTasks extends AppCompatActivity
     private SimpleDateFormat dateFormat;
     private Date startDate;
     private Date endDate;
+    private AlertDialog taskDeleteAlert;
+    private AlertDialog assignmentDeleteAlert;
+    private AlertDialog materialDeleteAlert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tasks);
-        taskListView = (ListView)findViewById(R.id.taskListView);
-        taskNameEditTxt = (EditText)findViewById(R.id.nameEditTxt);
-        phaseSpinner = (Spinner)findViewById(R.id.phaseSpinner);
-        fromDateEtxt = (EditText)findViewById(R.id.fromDateEtxt);
-        toDateEtxt = (EditText)findViewById(R.id.toDateEtxt);
-        skipWeekendsCheckbox = (CheckBox)findViewById(R.id.skipWeekendsCheckbox);
-        unscheduledCheckbox = (CheckBox)findViewById(R.id.unscheduledCheckbox);
-        newTaskBtn = (Button)findViewById(R.id.newTaskBtn);
-        saveTaskBtn = (Button)findViewById(R.id.saveTaskBtn);
-        finishButton = (Button)findViewById(R.id.finishBtn);
-        newAssignBtn = (Button)findViewById(R.id.newAssignBtn);
-        saveAssignBtn = (Button)findViewById(R.id.saveAssignBtn);
-        roleSpinner = (Spinner)findViewById(R.id.roleSpinner);
-        personSpinner = (Spinner)findViewById(R.id.personSpinner);
-        hoursEditTxt = (EditText)findViewById(R.id.hoursEditTxt);
-        rateEditTxt = (EditText) findViewById(R.id.rateEditTxt);
-        assignmentListView = (ListView) findViewById(R.id.assignmentsListView);
-        newMatBtn = (Button) findViewById(R.id.newMatBtn);
-        saveMatBtn = (Button) findViewById(R.id.saveMatBtn);
-        matNameEditTxt = (EditText) findViewById(R.id.matNameEditTxt);
-        matCostEditTxt = (EditText)findViewById(R.id.matCostEditTxt);
-        materialListView = (ListView)findViewById(R.id.materialsListView);
 
-        newTaskBtn.setOnClickListener(this);
-        saveTaskBtn.setOnClickListener(this);
-        finishButton.setOnClickListener(this);
-        newAssignBtn.setOnClickListener(this);
-        saveAssignBtn.setOnClickListener(this);
-        newMatBtn.setOnClickListener(this);
-        saveMatBtn.setOnClickListener(this);
-        taskListView.setOnItemClickListener(this);
-        assignmentListView.setOnItemClickListener(this);
-        materialListView.setOnItemClickListener(this);
-        fromDateEtxt.setOnClickListener(this);
-        toDateEtxt.setOnClickListener(this);
-
-        dateFormat = new SimpleDateFormat("dd-MM-yyy");
-        Calendar cal = Calendar.getInstance();
-        fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                startDate = newDate.getTime();
-                fromDateEtxt.setText(dateFormat.format(newDate.getTime()));
-            }
-        }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-        toDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                endDate = newDate.getTime();
-                toDateEtxt.setText(dateFormat.format(newDate.getTime()));
-            }
-        }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-        startDate = new Date();
-        endDate = new Date();
+        getViews();
+        setListeners();
+        setUpDatePickers();
 
         Intent i = getIntent();
         isNew = i.getBooleanExtra(Util.IS_NEW, false);
@@ -178,6 +132,134 @@ public class AddTasks extends AppCompatActivity
                 }
             }
         });
+    }
+
+    private void getViews(){
+        taskListView = (ListView)findViewById(R.id.taskListView);
+        taskNameEditTxt = (EditText)findViewById(R.id.nameEditTxt);
+        phaseSpinner = (Spinner)findViewById(R.id.phaseSpinner);
+        fromDateEtxt = (EditText)findViewById(R.id.fromDateEtxt);
+        toDateEtxt = (EditText)findViewById(R.id.toDateEtxt);
+        skipWeekendsCheckbox = (CheckBox)findViewById(R.id.skipWeekendsCheckbox);
+        unscheduledCheckbox = (CheckBox)findViewById(R.id.unscheduledCheckbox);
+        newTaskBtn = (Button)findViewById(R.id.newTaskBtn);
+        saveTaskBtn = (Button)findViewById(R.id.saveTaskBtn);
+        finishButton = (Button)findViewById(R.id.finishBtn);
+        newAssignBtn = (Button)findViewById(R.id.newAssignBtn);
+        saveAssignBtn = (Button)findViewById(R.id.saveAssignBtn);
+        deleteTaskBtn = (Button)findViewById(R.id.deleteTaskBtn);
+        deleteAssignBtn = (Button)findViewById(R.id.deleteAssignBtn);
+        deleteMatBtn = (Button)findViewById(R.id.deleteMatBtn);
+        roleSpinner = (Spinner)findViewById(R.id.roleSpinner);
+        personSpinner = (Spinner)findViewById(R.id.personSpinner);
+        hoursEditTxt = (EditText)findViewById(R.id.hoursEditTxt);
+        rateEditTxt = (EditText) findViewById(R.id.rateEditTxt);
+        assignmentListView = (ListView) findViewById(R.id.assignmentsListView);
+        newMatBtn = (Button) findViewById(R.id.newMatBtn);
+        saveMatBtn = (Button) findViewById(R.id.saveMatBtn);
+        matNameEditTxt = (EditText) findViewById(R.id.matNameEditTxt);
+        matCostEditTxt = (EditText)findViewById(R.id.matCostEditTxt);
+        materialListView = (ListView)findViewById(R.id.materialsListView);
+    }
+
+    private void setListeners(){
+        newTaskBtn.setOnClickListener(this);
+        saveTaskBtn.setOnClickListener(this);
+        finishButton.setOnClickListener(this);
+        newAssignBtn.setOnClickListener(this);
+        saveAssignBtn.setOnClickListener(this);
+        newMatBtn.setOnClickListener(this);
+        saveMatBtn.setOnClickListener(this);
+        deleteTaskBtn.setOnClickListener(this);
+        deleteAssignBtn.setOnClickListener(this);
+        deleteMatBtn.setOnClickListener(this);
+        taskListView.setOnItemClickListener(this);
+        assignmentListView.setOnItemClickListener(this);
+        materialListView.setOnItemClickListener(this);
+        fromDateEtxt.setOnClickListener(this);
+        toDateEtxt.setOnClickListener(this);
+    }
+
+    private void setUpDatePickers(){
+        dateFormat = new SimpleDateFormat("dd-MM-yyy");
+        Calendar cal = Calendar.getInstance();
+        fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                startDate = newDate.getTime();
+                fromDateEtxt.setText(dateFormat.format(newDate.getTime()));
+            }
+        }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+        toDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                endDate = newDate.getTime();
+                toDateEtxt.setText(dateFormat.format(newDate.getTime()));
+            }
+        }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+        startDate = new Date();
+        endDate = new Date();
+    }
+
+    private void setUpTaskAlert(){
+        AlertDialog.Builder taskDelBuilder = new AlertDialog.Builder(AddTasks.this);
+        taskDelBuilder.setTitle(R.string.app_name);
+        taskDelBuilder.setMessage("Delete task " + currentTask.getName() + "?");
+        taskDelBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                deleteTask();
+            }
+        });
+        taskDelBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        taskDeleteAlert = taskDelBuilder.create();
+        taskDeleteAlert.show();
+    }
+
+    private void setUpAssignmentAlert(){
+        AlertDialog.Builder assignDelBuilder = new AlertDialog.Builder(AddTasks.this);
+        assignDelBuilder.setTitle(R.string.app_name);
+        assignDelBuilder.setMessage("Delete assignment for " + currentAssignment.getPerson().getName() + "?");
+        assignDelBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                deleteAssignment();
+            }
+        });
+        assignDelBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        assignmentDeleteAlert = assignDelBuilder.create();
+        assignmentDeleteAlert.show();
+    }
+
+    private void setUpMaterialAlert(){
+        AlertDialog.Builder matDelBuilder = new AlertDialog.Builder(AddTasks.this);
+        matDelBuilder.setTitle(R.string.app_name);
+        matDelBuilder.setMessage("Delete material " + currentMaterial.getName() + "?");
+        matDelBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                deleteMaterial();
+            }
+        });
+        matDelBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        materialDeleteAlert = matDelBuilder.create();
+        materialDeleteAlert.show();
     }
 
     private void getPhases(){
@@ -378,13 +460,13 @@ public class AddTasks extends AppCompatActivity
     private void populateAssignmentFields(){
         personSpinner.setSelection(personList.indexOf(currentAssignment.getPerson()));
         roleSpinner.setSelection(roleList.indexOf(currentAssignment.getRole()));
-        hoursEditTxt.setText(Float.toString(currentAssignment.getBudgetedHours()));
-        rateEditTxt.setText(Float.toString(currentAssignment.getRate()));
+        hoursEditTxt.setText(Double.toString(currentAssignment.getBudgetedHours()));
+        rateEditTxt.setText(Double.toString(currentAssignment.getRate()));
     }
 
     private void populateMaterialFields(){
         matNameEditTxt.setText(currentMaterial.getName());
-        matCostEditTxt.setText(Float.toString(currentMaterial.getBudgetedCost()));
+        matCostEditTxt.setText(Double.toString(currentMaterial.getBudgetedCost()));
     }
 
     private void clearAssignmentFields(){
@@ -428,7 +510,7 @@ public class AddTasks extends AppCompatActivity
         };
     }
 
-    public void refreshAssignmentList(){
+    private void refreshAssignmentList(){
         assignmentListView.setAdapter(assignmentAdapter);
     }
 
@@ -437,7 +519,7 @@ public class AddTasks extends AppCompatActivity
                 android.R.layout.simple_list_item_1, materialList);
     }
 
-    public void refreshMaterialList(){
+    private void refreshMaterialList(){
         materialListView.setAdapter(materialAdapter);
     }
 
@@ -502,13 +584,13 @@ public class AddTasks extends AppCompatActivity
         Role role = roleList.get(roleSpinner.getSelectedItemPosition());
         String hoursString = hoursEditTxt.getText().toString();
         String rateString = rateEditTxt.getText().toString();
-        float hours = 0;
-        float rate = 0;
+        double hours = 0;
+        double rate = 0;
         if (!hoursString.isEmpty()){
-            hours = Float.valueOf(hoursString);
+            hours = Double.valueOf(hoursString);
         }
         if (!rateString.isEmpty()){
-            rate = Float.valueOf(rateString);
+            rate = Double.valueOf(rateString);
         }
         if (currentAssignment.setUpAssignment(getApplicationContext(), person, role, hours, rate,
                 currentTask, currentProject, currentPhase)) {
@@ -535,12 +617,12 @@ public class AddTasks extends AppCompatActivity
         }
     }
 
-    public void saveMaterial(){
+    private void saveMaterial(){
         String name = matNameEditTxt.getText().toString();
         String costString = matCostEditTxt.getText().toString();
-        float cost = 0;
+        double cost = 0;
         if (!costString.isEmpty()){
-            cost = Float.valueOf(costString);
+            cost = Double.valueOf(costString);
         }
         if (currentMaterial.setUpMaterial(getApplicationContext(), name, cost, currentTask,
                 currentProject, currentPhase, materialList)){
@@ -567,6 +649,53 @@ public class AddTasks extends AppCompatActivity
         }
     }
 
+    private void deleteTask(){
+        for (int i = assignmentList.size()-1; i>-1; i--){
+            Assignment a = assignmentList.get(i);
+            allAssignmentsList.remove(a.tempHoldingIndex);
+            assignmentList.remove(i);
+            a.deleteInBackground();
+        }
+        for (int j = materialList.size()-1; j>-1; j--){
+            Material m = materialList.get(j);
+            allMaterialsList.remove(m.tempHoldingIndex);
+            materialList.remove(j);
+            m.deleteInBackground();
+        }
+        taskList.remove(taskNum);
+        currentTask.deleteInBackground();
+        refreshTaskList();
+        taskNum = 0;
+        currentTask = taskList.get(0);
+        populateTaskFields();
+    }
+
+    private void deleteAssignment(){
+        for (Assignment a : assignmentList){
+            if (a.tempHoldingIndex > currentAssignment.tempHoldingIndex){
+                a.tempHoldingIndex--;
+            }
+        }
+        allAssignmentsList.remove(currentAssignment.tempHoldingIndex);
+        assignmentList.remove(assignmentNum);
+        currentAssignment.deleteInBackground();
+        clearAssignmentFields();
+        refreshAssignmentList();
+    }
+
+    private void deleteMaterial(){
+        for (Material m : materialList){
+            if (m.tempHoldingIndex > currentMaterial.tempHoldingIndex){
+                m.tempHoldingIndex--;
+            }
+        }
+        allMaterialsList.remove(currentMaterial.tempHoldingIndex);
+        materialList.remove(materialNum);
+        currentMaterial.deleteInBackground();
+        clearMaterialFields();
+        refreshMaterialList();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -574,7 +703,6 @@ public class AddTasks extends AppCompatActivity
                 createNewTask();
                 break;
             case (R.id.saveTaskBtn):
-                Log.d(LOG_TAG, "in save task");
                 saveTask();
                 break;
             case (R.id.fromDateEtxt):
@@ -587,7 +715,6 @@ public class AddTasks extends AppCompatActivity
                 clearAssignmentFields();
                 break;
             case (R.id.saveAssignBtn):
-                Log.d(LOG_TAG, "in save assignment");
                 saveAssignment();
                 break;
             case (R.id.newMatBtn):
@@ -596,6 +723,19 @@ public class AddTasks extends AppCompatActivity
             case (R.id.saveMatBtn):
                 saveMaterial();
                 break;
+            case (R.id.deleteTaskBtn):
+                setUpTaskAlert();
+                break;
+            case (R.id.deleteAssignBtn):
+                setUpAssignmentAlert();
+                break;
+            case (R.id.deleteMatBtn):
+                setUpMaterialAlert();
+                break;
+            case (R.id.finishBtn):
+                Intent data = new Intent();
+                setResult(RESULT_OK, data);
+                finish();
         }
     }
 

@@ -22,7 +22,7 @@ public class Material extends KaolinObject{
 //    public static final String PHASE = "phase";
     public int tempHoldingIndex = 0;
 
-    public boolean setUpMaterial(Context context, String name, float cost, Task task,
+    public boolean setUpMaterial(Context context, String name, double cost, Task task,
                                  Project project, Phase phase, List<Material> materialList){
         if (checkString(context, name, NAME, materialList)){
             setName(name);
@@ -44,11 +44,11 @@ public class Material extends KaolinObject{
         put(NAME, value);
     }
 
-    public float getBudgetedCost(){
-        return (float) getNumber(BUDGETED_COST);
+    public double getBudgetedCost(){
+        return getDouble(BUDGETED_COST);
     }
 
-    public void setBudgetedCost(float cost){
+    public void setBudgetedCost(double cost){
         put(BUDGETED_COST, cost);
     }
 

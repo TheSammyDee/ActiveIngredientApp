@@ -23,8 +23,8 @@ public class Assignment extends KaolinObject{
 //    public static final String PHASE = "phase";
     public int tempHoldingIndex = 0;
 
-    public boolean setUpAssignment(Context context, Person person, Role role, float hours,
-                                   float rate, Task task, Project project, Phase phase){
+    public boolean setUpAssignment(Context context, Person person, Role role, double hours,
+                                   double rate, Task task, Project project, Phase phase){
         setPerson(person);
         setRole(role);
         setBudgetedHours(hours);
@@ -36,27 +36,27 @@ public class Assignment extends KaolinObject{
         return true;
     }
 
-    public float getBudgetedHours(){
-        return (float)getNumber(BUDGETED_HOURS);
+    public double getBudgetedHours(){
+        return getDouble(BUDGETED_HOURS);
     }
 
-    public void setBudgetedHours(Number hours){
+    public void setBudgetedHours(double hours){
         put(BUDGETED_HOURS, hours);
     }
 
-    public float getHoursRemaining(){
-        return (float)getNumber(HOURS_REMAINING);
+    public double getHoursRemaining(){
+        return getDouble(HOURS_REMAINING);
     }
 
-    public void setHoursRemaining(Number hours){
+    public void setHoursRemaining(double hours){
         put(HOURS_REMAINING, hours);
     }
 
-    public float getRate(){
-        return (float)getNumber(RATE);
+    public double getRate(){
+        return getDouble(RATE);
     }
 
-    public void setRate(Number rate){
+    public void setRate(double rate){
         put(RATE, rate);
     }
 

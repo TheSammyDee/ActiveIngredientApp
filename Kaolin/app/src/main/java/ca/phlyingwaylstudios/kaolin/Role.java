@@ -22,11 +22,11 @@ public class Role extends KaolinObject{
         put(NAME, value);
     }
 
-    public Float getRate(){
-        return (Float)getNumber(RATE);
+    public double getRate(){
+        return getDouble(RATE);
     }
 
-    public void setRate(Number rate){
+    public void setRate(double rate){
         put(RATE, rate);
     }
 }

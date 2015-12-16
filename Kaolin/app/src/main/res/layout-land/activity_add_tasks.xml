@@ -66,6 +66,13 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Delete"
+                android:id="@+id/deleteTaskBtn"
+                android:paddingLeft="10dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Finish"
                 android:id="@+id/finishBtn" />
         </LinearLayout>
@@ -161,6 +168,13 @@
                         android:text="Save"
                         android:id="@+id/saveAssignBtn"
                         android:paddingLeft="10dp" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Delete"
+                        android:id="@+id/deleteAssignBtn"
+                        android:paddingLeft="10dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -243,6 +257,13 @@
                         android:layout_height="wrap_content"
                         android:text="Save"
                         android:id="@+id/saveMatBtn"
+                        android:paddingLeft="10dp" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Delete"
+                        android:id="@+id/deleteMatBtn"
                         android:paddingLeft="10dp" />
                 </LinearLayout>
 

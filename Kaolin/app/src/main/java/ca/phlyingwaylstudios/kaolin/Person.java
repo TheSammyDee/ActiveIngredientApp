@@ -1,14 +1,13 @@
 package ca.phlyingwaylstudios.kaolin;
 
 import com.parse.ParseClassName;
-import com.parse.ParseObject;
 
 /**
  * Created by il on 06/12/2015.
  */
 
 @ParseClassName("Person")
-public class Person extends ParseObject{
+public class Person extends KaolinObject{
 
     private static final String LOG_TAG = "Person";
     public static final String FIRST_NAME = "firstName";
@@ -35,11 +34,11 @@ public class Person extends ParseObject{
         return getFirstName() + " " + getLastName();
     }
 
-    public Float getDailyHours(){
-        return (Float)getNumber(DAILY_HOURS);
+    public double getDailyHours(){
+        return getDouble(DAILY_HOURS);
     }
 
-    public void setDailyHours(Number hours){
+    public void setDailyHours(double hours){
         put(DAILY_HOURS, hours);
     }
 }

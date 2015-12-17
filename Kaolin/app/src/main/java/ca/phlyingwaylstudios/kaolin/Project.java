@@ -17,6 +17,7 @@ public class Project extends KaolinObject {
 //    public static final String COLOR = "color";
 //    public static final String START_DATE = "startDate";
 //    public static final String END_DATE = "endDate";
+    public static final String BASE = "base";
 
     public boolean setUpProject(Context context, String name, String code, String color,
                                 Date startDate, List<Project> projectList){
@@ -134,5 +135,13 @@ public class Project extends KaolinObject {
 
     public void setEndDate(Date date){
         put(END_DATE, Util.removeTime(date));
+    }
+
+    public int getBase(){
+        return getInt(BASE);
+    }
+
+    public void setBase(int base){
+        put(BASE, base);
     }
 }

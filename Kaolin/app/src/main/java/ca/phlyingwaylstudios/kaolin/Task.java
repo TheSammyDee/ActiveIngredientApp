@@ -29,7 +29,7 @@ public class Task extends KaolinObject{
 
 
     public boolean setUpTask(Context context, String name, Phase phase, Boolean skipWeekends,
-                             Boolean unscheduled, Date startDate, Date endDate, List<Task> taskList){
+                             Boolean unscheduled, Date startDate, Date endDate, int base, List<Task> taskList){
         if (checkString(context, name, NAME, taskList)){
             startDateHolder = Util.removeTime(startDate);
             endDateHolder = Util.removeTime(endDate);
@@ -45,8 +45,8 @@ public class Task extends KaolinObject{
             setPhase(phase);
             setSkipWeekends(skipWeekends);
             setUnscheduled(unscheduled);
-            addStartDate(startDateHolder);
-            addEndDate(endDateHolder);
+            addStartDate(startDateHolder, base);
+            addEndDate(endDateHolder, base);
             return true;
         } else {
             return false;
@@ -131,9 +131,29 @@ public class Task extends KaolinObject{
         put(START_DATES, startDates);
     }
 
-    public void addStartDate(Date date){
-        add(START_DATES, Util.removeTime(date));
+    public void addStartDate(Date date, int base){
+        setStartDates(positionDateInArray(date, base, getStartDates()));
+
     }
+
+    private ArrayList<Date> positionDateInArray(Date date, int base, ArrayList<Date> array){
+        if (array.size() == 0 || array.size() == base) {
+            array.add(Util.removeTime(date));
+            return array;
+        } else if (array.size() > base){
+            array.remove(base);
+            array.add(base, date);
+            return array;
+        } else {
+            Date oldDate = array.get(array.size()-1);
+            while (array.size() < base){
+                array.add(oldDate);
+            }
+            array.add(date);
+            return array;
+        }
+    }
+
     public ArrayList<Date> getEndDates(){
         return (ArrayList<Date>)get(END_DATES);
     }
@@ -142,8 +162,8 @@ public class Task extends KaolinObject{
         put(END_DATES, endDates);
     }
 
-    public void addEndDate(Date date){
-        add(END_DATES, Util.removeTime(date));
+    public void addEndDate(Date date, int base){
+        setEndDates(positionDateInArray(date, base, getEndDates()));
     }
 
     public Date getStartDate(int baselineNum){

@@ -19,8 +19,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -99,11 +97,7 @@ public class AddTasks extends AppCompatActivity
     private AlertDialog taskDeleteAlert;
     private AlertDialog assignmentDeleteAlert;
     private AlertDialog materialDeleteAlert;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
+    private boolean phaseChanged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,9 +133,6 @@ public class AddTasks extends AppCompatActivity
                 }
             }
         });
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     private void getViews() {
@@ -534,12 +525,17 @@ public class AddTasks extends AppCompatActivity
     }
 
     private void saveTask() {
+        phaseChanged = false;
         String name = taskNameEditTxt.getText().toString();
         currentPhase = phaseList.get(phaseSpinner.getSelectedItemPosition());
+        if (currentTask.getPhase() != currentPhase){
+            phaseChanged = true;
+        }
         Boolean skip = skipWeekendsCheckbox.isChecked();
         Boolean unsched = unscheduledCheckbox.isChecked();
+        //TODO implement detection of current baseline
         if (currentTask.setUpTask(getApplicationContext(), name, currentPhase, skip, unsched,
-                startDate, endDate, taskList)) {
+                startDate, endDate, 0, taskList)) {
             currentTask.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
@@ -550,7 +546,9 @@ public class AddTasks extends AppCompatActivity
                             taskList.remove(taskNum);
                             taskList.add(taskNum, currentTask);
                         }
-                        updateChildPhaseSelection();
+                        if (phaseChanged) {
+                            updateChildPhaseSelection();
+                        }
                         refreshTaskList();
                     } else {
                         Util.showSaveError(getApplicationContext());
@@ -587,6 +585,7 @@ public class AddTasks extends AppCompatActivity
                 });
             }
         }
+        //TODO update phase for any related WorkHours or MaterialCosts
     }
 
     private void saveAssignment() {

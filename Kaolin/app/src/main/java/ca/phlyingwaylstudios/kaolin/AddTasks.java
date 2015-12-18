@@ -99,6 +99,8 @@ public class AddTasks extends AppCompatActivity
     private AlertDialog materialDeleteAlert;
     private boolean phaseChanged;
 
+    //TODO change to use new internal object arrays for connecting tasks, assignments, etc
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

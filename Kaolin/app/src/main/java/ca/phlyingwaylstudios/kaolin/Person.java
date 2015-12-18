@@ -41,4 +41,8 @@ public class Person extends KaolinObject{
     public void setDailyHours(double hours){
         put(DAILY_HOURS, hours);
     }
+
+    public String toString(){
+        return getName();
+    }
 }

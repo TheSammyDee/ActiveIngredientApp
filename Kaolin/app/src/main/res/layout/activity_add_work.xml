@@ -85,7 +85,8 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingRight="30dp">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -101,7 +102,16 @@
                     android:layout_alignTop="@+id/linearLayout2"
                     android:layout_toRightOf="@+id/linearLayout2"
                     android:layout_toEndOf="@+id/linearLayout2"
-                    android:paddingTop="10dp" />
+                    android:paddingTop="10dp"
+                    android:paddingRight="50dp" />
+
+                <EditText
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:ems="10"
+                    android:id="@+id/dateEditTxt"
+                    android:layout_weight="1" />
 
                 <Button
                     android:layout_width="wrap_content"
@@ -110,7 +120,8 @@
                     android:id="@+id/newAssignBtn"
                     android:layout_below="@+id/addTitleTxt"
                     android:layout_toLeftOf="@+id/newMatBtn"
-                    android:layout_toStartOf="@+id/newMatBtn" />
+                    android:layout_toStartOf="@+id/newMatBtn"
+                    android:layout_gravity="right" />
 
                 <Button
                     android:layout_width="wrap_content"
@@ -119,7 +130,8 @@
                     android:id="@+id/newMatBtn"
                     android:layout_below="@+id/addTitleTxt"
                     android:layout_toLeftOf="@+id/saveBtn"
-                    android:layout_toStartOf="@+id/saveBtn" />
+                    android:layout_toStartOf="@+id/saveBtn"
+                    android:layout_gravity="right" />
 
                 <Button
                     android:layout_width="wrap_content"
@@ -128,7 +140,149 @@
                     android:id="@+id/saveBtn"
                     android:layout_below="@+id/addTitleTxt"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="right" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="30dp"
+                android:id="@+id/addWorkCostView">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Medium Text"
+                    android:id="@+id/addNameTxt"
+                    android:paddingRight="20dp" />
+
+                <EditText
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:ems="10"
+                    android:id="@+id/addWorkCostEditTxt"
+                    android:layout_weight="1"
+                    android:layout_gravity="top|bottom"
+                    android:hint="Work hours" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/newAssignmentView"
+                android:padding="30dp">
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/personSpinner"
+                    android:layout_weight="1"
+                    android:paddingRight="10dp" />
+
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/roleSpinner"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:paddingRight="10dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:ems="10"
+                    android:id="@+id/rateEditTxt"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:paddingRight="10dp"
+                    android:hint="Hourly rate" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:ems="10"
+                    android:id="@+id/newAssignWorkEditTxt"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:hint="Work hours" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="30dp"
+                android:id="@+id/newMaterialView">
+
+                <EditText
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/materialNameEditTxt"
+                    android:inputType="textCapSentences"
+                    android:hint="Name"
+                    android:paddingRight="10dp" />
+
+                <EditText
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:ems="10"
+                    android:id="@+id/newMatCostEditTxt"
+                    android:hint="Cost" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingRight="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Assignments"
+                        android:id="@+id/textView11"
+                        android:paddingBottom="10dp" />
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/assignmentListView" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Materials"
+                        android:id="@+id/textView12"
+                        android:paddingBottom="10dp" />
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/materialListView" />
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>

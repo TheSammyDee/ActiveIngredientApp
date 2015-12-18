@@ -27,6 +27,9 @@ public class Task extends KaolinObject{
     public static final String START_DATES = "startDates";
     public static final String END_DATES = "endDates";
 
+    private ArrayList<Assignment> assignments;
+    private ArrayList<Material> materials;
+
 
     public boolean setUpTask(Context context, String name, Phase phase, Boolean skipWeekends,
                              Boolean unscheduled, Date startDate, Date endDate, int base, List<Task> taskList){
@@ -175,11 +178,85 @@ public class Task extends KaolinObject{
     }
 
     public Date getNewestStartDate(){
-        return getStartDate(getStartDates().size()-1);
+        return getStartDate(getStartDates().size() - 1);
     }
 
     public Date getNewestEndDate(){
-        return getEndDate(getEndDates().size()-1);
+        return getEndDate(getEndDates().size() - 1);
+    }
+
+    public ArrayList<Assignment> getAssignments(){
+        return assignments;
+    }
+
+    public void setAssignments(ArrayList<Assignment> array){
+        assignments = array;
+    }
+
+    public void addAssignment(Assignment a){
+        assignments.add(a);
+    }
+
+    public void addAssignment(int i, Assignment a){
+        assignments.add(i, a);
+    }
+
+    public void removeAssignment(int i){
+        assignments.remove(i);
+    }
+
+    public int numOfAssignments(){
+        return assignments.size();
+    }
+
+    public Assignment getAssignment(int i){
+        return assignments.get(i);
+    }
+
+    public void saveAssignment(int i, Assignment a){
+        if (i >= numOfAssignments()){
+            addAssignment(a);
+        } else {
+            removeAssignment(i);
+            addAssignment(i, a);
+        }
+    }
+
+    public ArrayList<Material> getMaterials(){
+        return materials;
+    }
+
+    public void setMaterials(ArrayList<Material> array){
+        materials = array;
+    }
+
+    public void addMaterial(Material m){
+        materials.add(m);
+    }
+
+    public void addMaterial(int i, Material m){
+        materials.add(i, m);
+    }
+
+    public void removeMaterial(int i){
+        materials.remove(i);
+    }
+
+    public int numOfMaterials(){
+        return materials.size();
+    }
+
+    public Material getMaterial(int i){
+        return materials.get(i);
+    }
+
+    public void saveMaterial(int i, Material m){
+        if (i >= numOfMaterials()){
+            addMaterial(m);
+        } else {
+            removeMaterial(i);
+            addMaterial(i, m);
+        }
     }
 
     public String toString(){

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.parse.ParseClassName;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,9 @@ public class Project extends KaolinObject {
 //    public static final String START_DATE = "startDate";
 //    public static final String END_DATE = "endDate";
     public static final String BASE = "base";
+    public static final String IS_TEMPLATE = "isTemplate";
+
+    private List<Task> tasks;
 
     public boolean setUpProject(Context context, String name, String code, String color,
                                 Date startDate, List<Project> projectList){
@@ -143,5 +147,73 @@ public class Project extends KaolinObject {
 
     public void setBase(int base){
         put(BASE, base);
+    }
+
+    public List<Task> getTasks(){
+        return tasks;
+    }
+
+    public void setTasks(List<Task> array){
+        tasks = sortTasks(array);
+    }
+
+    private List<Task> sortTasks(List<Task> list){
+        List<Task> newList = new ArrayList<Task>();
+        newList.add(list.get(0));
+        list.remove(0);
+        while (list.size() > 0){
+            for (int i = 0; i >= newList.size(); i++){
+                if (newList.size() == i){
+                    newList.add(list.get(0));
+                    list.remove(0);
+                } else if (newList.get(i).getNewestStartDate().after(list.get(0).getNewestStartDate())){
+                    newList.add(i, list.get(0));
+                    list.remove(0);
+                } else if (newList.get(i).getNewestStartDate().equals(list.get(0).getNewestStartDate())){
+                    if (newList.get(i).getNewestEndDate().after(list.get(0).getNewestEndDate())){
+                        newList.add(i, list.get(0));
+                        list.remove(0);
+                    }
+                }
+            }
+        }
+        return newList;
+    }
+
+    public void addTask(Task t){
+        tasks.add(t);
+    }
+
+    public void addTask(int i, Task t){
+        tasks.add(i, t);
+    }
+
+    public void removeTask(int i){
+        tasks.remove(i);
+    }
+
+    public int numOfTasks(){
+        return tasks.size();
+    }
+
+    public Task getTask(int i){
+        return tasks.get(i);
+    }
+
+    public void saveTask(int i, Task t){
+        if (i >= numOfTasks()){
+            addTask(t);
+        } else {
+            removeTask(i);
+            addTask(i, t);
+        }
+    }
+
+    public boolean isTemplate(){
+        return getBoolean(IS_TEMPLATE);
+    }
+
+    public void setIsTemplate(boolean bool){
+        put(IS_TEMPLATE, bool);
     }
 }

@@ -5,6 +5,8 @@ import android.content.Context;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by il on 06/12/2015.
  */
@@ -22,6 +24,8 @@ public class Assignment extends KaolinObject{
 //    public static final String PROJECT = "project";
 //    public static final String PHASE = "phase";
     public int tempHoldingIndex = 0;
+
+    public ArrayList<WorkHours> workHours;
 
     public boolean setUpAssignment(Context context, Person person, Role role, double hours,
                                    double rate, Task task, Project project, Phase phase){
@@ -98,5 +102,42 @@ public class Assignment extends KaolinObject{
 
     public void setPhase(Phase phase){
         put(PHASE, ParseObject.createWithoutData(Phase.class, phase.getObjectId()));
+    }
+
+    public ArrayList<WorkHours> getWorkHourses(){
+        return workHours;
+    }
+
+    public void setWorkHourses(ArrayList<WorkHours> array){
+        workHours = array;
+    }
+
+    public void addWorkHours(WorkHours w){
+        workHours.add(w);
+    }
+
+    public void addWorkHours(int i, WorkHours w){
+        workHours.add(i, w);
+    }
+
+    public void removeWorkHours(int i){
+        workHours.remove(i);
+    }
+
+    public int numOfWorkHourses(){
+        return workHours.size();
+    }
+
+    public WorkHours getWorkHours(int i){
+        return workHours.get(i);
+    }
+
+    public void saveWorkHours(int i, WorkHours w){
+        if (i >= numOfWorkHourses()){
+            addWorkHours(w);
+        } else {
+            removeWorkHours(i);
+            addWorkHours(i, w);
+        }
     }
 }

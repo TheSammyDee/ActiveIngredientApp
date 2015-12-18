@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.parse.ParseClassName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +22,8 @@ public class Material extends KaolinObject{
 //    public static final String PROJECT = "project";
 //    public static final String PHASE = "phase";
     public int tempHoldingIndex = 0;
+
+    private ArrayList<MaterialCost> materialCosts;
 
     public boolean setUpMaterial(Context context, String name, double cost, Task task,
                                  Project project, Phase phase, List<Material> materialList){
@@ -74,6 +77,43 @@ public class Material extends KaolinObject{
 
     public void setPhase(Phase phase){
         put(PHASE, phase);
+    }
+
+    public ArrayList<MaterialCost> getMaterialCosts(){
+        return materialCosts;
+    }
+
+    public void setMaterialCosts(ArrayList<MaterialCost> array){
+        materialCosts = array;
+    }
+
+    public void addMaterialCost(MaterialCost m){
+        materialCosts.add(m);
+    }
+
+    public void addMaterialCost(int i, MaterialCost m){
+        materialCosts.add(i, m);
+    }
+
+    public void removeMaterialCost(int i){
+        materialCosts.remove(i);
+    }
+
+    public int numOfMaterialCosts(){
+        return materialCosts.size();
+    }
+
+    public MaterialCost getMaterialCost(int i){
+        return materialCosts.get(i);
+    }
+
+    public void saveMaterialCost(int i, MaterialCost m){
+        if (i >= numOfMaterialCosts()){
+            addMaterialCost(m);
+        } else {
+            removeMaterialCost(i);
+            addMaterialCost(i, m);
+        }
     }
 
     public String toString(){

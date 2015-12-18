@@ -18,6 +18,8 @@ public class Application extends android.app.Application {
         ParseObject.registerSubclass(Role.class);
         ParseObject.registerSubclass(Person.class);
         ParseObject.registerSubclass(Material.class);
+        ParseObject.registerSubclass(WorkHours.class);
+        ParseObject.registerSubclass(MaterialCost.class);
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "tRfhiKAodhGmCI6n1Th4GIzz74NQwPllvt3obhwS", "Ag65kVQQACOnhIDf8cqcYtg4aBOhAy4vVI0wUDd5");
     }

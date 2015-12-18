@@ -277,7 +277,8 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/matNameEditTxt"
                         android:layout_weight="1"
-                        android:hint="Name" />
+                        android:hint="Name"
+                        android:inputType="textCapSentences" />
 
                     <EditText
                         android:layout_width="0dp"

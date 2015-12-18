@@ -27,8 +27,14 @@ public class KaolinObject extends ParseObject{
     public static final String ROLE = "role";
     public static final String PERSON = "person";
     public static final String RATE = "rate";
+    public static final String ASSIGNMENT = "assignment";
+    public static final String MATERIAL = "material";
+    public static final String DATE = "date";
+    public static final String CREATED_AT = "createdAt";
+
     protected Date startDateHolder;
     protected Date endDateHolder;
+    protected boolean collected = false;
 
     protected boolean checkString(Context context, String testString, String key, List<? extends KaolinObject> list){
         if (null == testString || testString.isEmpty()){
@@ -98,6 +104,14 @@ public class KaolinObject extends ParseObject{
         }
         startDateHolder = startCal.getTime();
         endDateHolder = endCal.getTime();
+    }
+
+    public boolean isCollected(){
+        return collected;
+    }
+
+    public void setCollected(boolean bool){
+        collected = bool;
     }
 
 //    public List<?> collectConnected(String key, List<? extends KaolinObject> list){

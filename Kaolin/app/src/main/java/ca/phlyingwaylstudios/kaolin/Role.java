@@ -29,4 +29,8 @@ public class Role extends KaolinObject{
     public void setRate(double rate){
         put(RATE, rate);
     }
+
+    public String toString(){
+        return getName();
+    }
 }

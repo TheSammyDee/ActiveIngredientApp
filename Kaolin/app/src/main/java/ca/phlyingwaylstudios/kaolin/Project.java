@@ -1,6 +1,7 @@
 package ca.phlyingwaylstudios.kaolin;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.parse.ParseClassName;
 
@@ -160,19 +161,25 @@ public class Project extends KaolinObject {
     private List<Task> sortTasks(List<Task> list){
         List<Task> newList = new ArrayList<Task>();
         newList.add(list.get(0));
+        Log.d(LOG_TAG, list.get(0).getName() + " added, " + list.size() + " remaining");
         list.remove(0);
         while (list.size() > 0){
-            for (int i = 0; i >= newList.size(); i++){
+            Log.d(LOG_TAG, "looping for list size " + list.size());
+            for (int i = 0; i <= newList.size(); i++){
+                Log.d(LOG_TAG, "comparing newList-" + i + " vs next in list");
                 if (newList.size() == i){
                     newList.add(list.get(0));
                     list.remove(0);
+                    break;
                 } else if (newList.get(i).getNewestStartDate().after(list.get(0).getNewestStartDate())){
                     newList.add(i, list.get(0));
                     list.remove(0);
+                    break;
                 } else if (newList.get(i).getNewestStartDate().equals(list.get(0).getNewestStartDate())){
                     if (newList.get(i).getNewestEndDate().after(list.get(0).getNewestEndDate())){
                         newList.add(i, list.get(0));
                         list.remove(0);
+                        break;
                     }
                 }
             }

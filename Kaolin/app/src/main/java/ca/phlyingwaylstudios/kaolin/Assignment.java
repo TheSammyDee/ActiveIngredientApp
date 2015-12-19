@@ -25,7 +25,7 @@ public class Assignment extends KaolinObject{
 //    public static final String PHASE = "phase";
     public int tempHoldingIndex = 0;
 
-    public ArrayList<WorkHours> workHours;
+    public ArrayList<WorkHours> workHours = new ArrayList<>();
 
     public boolean setUpAssignment(Context context, Person person, Role role, double hours,
                                    double rate, Task task, Project project, Phase phase){

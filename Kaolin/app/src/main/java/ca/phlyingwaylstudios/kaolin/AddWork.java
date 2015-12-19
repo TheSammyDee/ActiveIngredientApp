@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -37,6 +38,7 @@ public class AddWork extends AppCompatActivity
     private static final int NEW_ASSIGNMENT = 3;
     private static final int NEW_MATERIAL = 4;
 
+    private TextView titleTxt;
     private Spinner projectSpinner;
     private Spinner viewSpinner;
     private ListView taskListView;
@@ -58,12 +60,12 @@ public class AddWork extends AppCompatActivity
     private ListView assignmentListView;
     private ListView materialListView;
 
-    private Project currentProject;
-    private Task currentTask;
-    private Assignment currentAssignment;
-    private Material currentMaterial;
-    private WorkHours currentWorkHours;
-    private MaterialCost currentMaterialCost;
+//    private Project currentProject;
+//    private Task currentTask;
+//    private Assignment currentAssignment;
+//    private Material currentMaterial;
+//    private WorkHours currentWorkHours;
+//    private MaterialCost currentMaterialCost;
     private List<Project> projectList;
     private List<Task> taskList;
     private List<Assignment> assignmentList;
@@ -80,7 +82,14 @@ public class AddWork extends AppCompatActivity
     private DatePickerDialog datePickerDialog;
     private SimpleDateFormat dateFormat;
     private Date currentDate;
-    private String startingProjectId;
+   // private int startingProjectNum;
+    private int projectNum = -1;
+    private int taskNum;
+    private int assignmentNum;
+    private int materialNum;
+    private int workHoursNum;
+    private int materialCostNum;
+
 
 
 
@@ -92,10 +101,17 @@ public class AddWork extends AppCompatActivity
 
         getViews();
         setListeners();
+        Log.d(LOG_TAG, "set listeners");
         setUpDatePicker();
+        Log.d(LOG_TAG, "set date picker");
+        taskListView.setAdapter(taskAdapter);
+        assignmentListView.setAdapter(assignmentAdapter);
+        materialListView.setAdapter(materialAdapter);
+        state = EDITING_ASSIGNMENT;
+        changeMode();
 
         Intent i = getIntent();
-        startingProjectId = i.getExtras().getString(KaolinObject.ID);
+        projectNum = i.getExtras().getInt(KaolinObject.ID);
         ParseQuery<Project> query = ParseQuery.getQuery(Project.class);
         query.whereNotEqualTo(Project.IS_TEMPLATE, true);
         query.orderByAscending(Project.END_DATE);
@@ -104,13 +120,8 @@ public class AddWork extends AppCompatActivity
             public void done(List<Project> objects, ParseException e) {
                 if (null == e) {
                     projectList = objects;
-                    for (Project p : projectList){
-                        if (p.getObjectId().equals(startingProjectId)){
-                            currentProject = p;
-                            break;
-                        }
-                    }
                     setUpSpinners();
+                    Log.d(LOG_TAG, "got projects");
                     populateView();
                 } else {
                     Util.showFindError(getApplicationContext());
@@ -120,6 +131,7 @@ public class AddWork extends AppCompatActivity
     }
 
     private void getViews(){
+        titleTxt = (TextView) findViewById(R.id.titleTxt);
         projectSpinner = (Spinner) findViewById(R.id.projectSpinner);
         viewSpinner = (Spinner) findViewById(R.id.viewSpinner);
         taskListView = (ListView) findViewById(R.id.taskListView);
@@ -170,8 +182,15 @@ public class AddWork extends AppCompatActivity
     }
 
     private void populateView(){
-        if (!currentProject.isCollected()){
+//        if (projectNum != this.projectNum) {
+//            currentProject = projectList.get(projectNum);
+//            this.projectNum = projectNum;
+//        }
+        titleTxt.setText(projectList.get(projectNum).getName());
+        if (!projectList.get(projectNum).isCollected()){
             collectData();
+        } else {
+            populateTaskList();
         }
     }
 
@@ -182,23 +201,24 @@ public class AddWork extends AppCompatActivity
             public void done(List<Person> objects, ParseException e) {
                 if (null == e) {
                     personList = objects;
+                    ParseQuery<Role> roleQuery = ParseQuery.getQuery(Role.class);
+                    roleQuery.findInBackground(new FindCallback<Role>() {
+                        @Override
+                        public void done(List<Role> objects, ParseException e) {
+                            if (null == e) {
+                                roleList = objects;
+                                setSpinnerAdapters();
+                            } else {
+                                Util.showFindError(getApplicationContext());
+                            }
+                        }
+                    });
                 } else {
                     Util.showFindError(getApplicationContext());
                 }
             }
         });
-        ParseQuery<Role> roleQuery = ParseQuery.getQuery(Role.class);
-        roleQuery.findInBackground(new FindCallback<Role>() {
-            @Override
-            public void done(List<Role> objects, ParseException e) {
-                if (null == e) {
-                    roleList = objects;
-                    setSpinnerAdapters();
-                } else {
-                    Util.showFindError(getApplicationContext());
-                }
-            }
-        });
+
     }
 
     private void setSpinnerAdapters(){
@@ -214,65 +234,65 @@ public class AddWork extends AppCompatActivity
 
     private void collectData(){
         ParseQuery<Task> taskQuery = new ParseQuery<Task>(Task.class);
-        taskQuery.whereEqualTo(KaolinObject.PROJECT, currentProject);
+        taskQuery.whereEqualTo(KaolinObject.PROJECT, projectList.get(projectNum));
         taskQuery.findInBackground(new FindCallback<Task>() {
             @Override
             public void done(List<Task> objects, ParseException e) {
                 if (null == e) {
                     taskList = objects;
-                } else {
-                    Util.showFindError(getApplicationContext());
-                }
-            }
-        });
-        ParseQuery<Assignment> assignQuery = new ParseQuery<Assignment>(Assignment.class);
-        assignQuery.whereEqualTo(KaolinObject.PROJECT, currentProject);
-        assignQuery.orderByAscending(KaolinObject.CREATED_AT);
-        assignQuery.findInBackground(new FindCallback<Assignment>() {
-            @Override
-            public void done(List<Assignment> objects, ParseException e) {
-                if (null == e) {
-                    assignmentList = objects;
-                } else {
-                    Util.showFindError(getApplicationContext());
-                }
-            }
-        });
-        ParseQuery<Material> matQuery = new ParseQuery<Material>(Material.class);
-        matQuery.whereEqualTo(KaolinObject.PROJECT, currentProject);
-        matQuery.orderByAscending(KaolinObject.CREATED_AT);
-        matQuery.findInBackground(new FindCallback<Material>() {
-            @Override
-            public void done(List<Material> objects, ParseException e) {
-                if (null == e) {
-                    materialList = objects;
-                } else {
-                    Util.showFindError(getApplicationContext());
-                }
-            }
-        });
-        ParseQuery<WorkHours> workQuery = new ParseQuery<WorkHours>(WorkHours.class);
-        workQuery.whereEqualTo(KaolinObject.PROJECT, currentProject);
-        workQuery.orderByAscending(KaolinObject.DATE);
-        workQuery.findInBackground(new FindCallback<WorkHours>() {
-            @Override
-            public void done(List<WorkHours> objects, ParseException e) {
-                if (null == e) {
-                    workHoursList = objects;
-                } else {
-                    Util.showFindError(getApplicationContext());
-                }
-            }
-        });
-        ParseQuery<MaterialCost> costQuery = new ParseQuery<MaterialCost>(MaterialCost.class);
-        costQuery.whereEqualTo(KaolinObject.PROJECT, currentProject);
-        costQuery.orderByAscending(KaolinObject.DATE);
-        costQuery.findInBackground(new FindCallback<MaterialCost>() {
-            @Override
-            public void done(List<MaterialCost> objects, ParseException e) {
-                if (null == e){
-                    materialCostList = objects;
-                    prepareData();
+                    ParseQuery<Assignment> assignQuery = new ParseQuery<Assignment>(Assignment.class);
+                    assignQuery.whereEqualTo(KaolinObject.PROJECT, projectList.get(projectNum));
+                    assignQuery.orderByAscending(KaolinObject.CREATED_AT);
+                    assignQuery.findInBackground(new FindCallback<Assignment>() {
+                        @Override
+                        public void done(List<Assignment> objects, ParseException e) {
+                            if (null == e) {
+                                assignmentList = objects;
+                                ParseQuery<Material> matQuery = new ParseQuery<Material>(Material.class);
+                                matQuery.whereEqualTo(KaolinObject.PROJECT, projectList.get(projectNum));
+                                matQuery.orderByAscending(KaolinObject.CREATED_AT);
+                                matQuery.findInBackground(new FindCallback<Material>() {
+                                    @Override
+                                    public void done(List<Material> objects, ParseException e) {
+                                        if (null == e) {
+                                            materialList = objects;
+                                            ParseQuery<WorkHours> workQuery = new ParseQuery<WorkHours>(WorkHours.class);
+                                            workQuery.whereEqualTo(KaolinObject.PROJECT, projectList.get(projectNum));
+                                            workQuery.orderByAscending(KaolinObject.DATE);
+                                            workQuery.findInBackground(new FindCallback<WorkHours>() {
+                                                @Override
+                                                public void done(List<WorkHours> objects, ParseException e) {
+                                                    if (null == e) {
+                                                        workHoursList = objects;
+                                                        ParseQuery<MaterialCost> costQuery = new ParseQuery<MaterialCost>(MaterialCost.class);
+                                                        costQuery.whereEqualTo(KaolinObject.PROJECT, projectList.get(projectNum));
+                                                        costQuery.orderByAscending(KaolinObject.DATE);
+                                                        costQuery.findInBackground(new FindCallback<MaterialCost>() {
+                                                            @Override
+                                                            public void done(List<MaterialCost> objects, ParseException e) {
+                                                                if (null == e) {
+                                                                    materialCostList = objects;
+                                                                    prepareData();
+                                                                } else {
+                                                                    Util.showFindError(getApplicationContext());
+                                                                }
+                                                            }
+                                                        });
+                                                    } else {
+                                                        Util.showFindError(getApplicationContext());
+                                                    }
+                                                }
+                                            });
+                                        } else {
+                                            Util.showFindError(getApplicationContext());
+                                        }
+                                    }
+                                });
+                            } else {
+                                Util.showFindError(getApplicationContext());
+                            }
+                        }
+                    });
                 } else {
                     Util.showFindError(getApplicationContext());
                 }
@@ -281,28 +301,97 @@ public class AddWork extends AppCompatActivity
     }
 
     private void prepareData(){
-        currentProject.setTasks(taskList);
+        projectList.get(projectNum).setTasks(taskList);
+        for (WorkHours w : workHoursList){
+            for (Assignment a : assignmentList){
+                if (w.getAssignment() == a){
+                    a.addWorkHours(w);
+                    break;
+                }
+            }
+        }
+        for (MaterialCost mc : materialCostList){
+            for (Material m : materialList){
+                if (mc.getMaterial() == m){
+                    m.addMaterialCost(mc);
+                    break;
+                }
+            }
+        }
+        for (Assignment a : assignmentList){
+            for (Task t : projectList.get(projectNum).getTasks()){
+                if (a.getTask() == t){
+                    t.addAssignment(a);
+                    break;
+                }
+            }
+        }
+        for (Material m : materialList){
+            for (Task t : projectList.get(projectNum).getTasks()){
+                if (m.getTask() == t){
+                    t.addMaterial(m);
+                    break;
+                }
+            }
+        }
+        projectList.get(projectNum).setCollected(true);
+        populateView();
+    }
+
+    private void populateTaskList(){
+        buildTaskAdapter();
+        taskNum = 0;
+        buildAssignmentAdapter();
+        buildMaterialAdapter();
+        assignmentNum = 0;
+        materialNum = 0;
+        populateAddFields();
+    }
+
+    private void populateAddFields(){
+        switch (state){
+            case (EDITING_ASSIGNMENT):
+                addNameTxt.setText(projectList.get(projectNum).getTask(taskNum)
+                        .getAssignment(assignmentNum).getPerson().getName() + " - "
+                        + projectList.get(projectNum).getTask(taskNum).getAssignment(assignmentNum)
+                        .getRole().getName());
+                //WORKING HERE figure out if work hours exist for assignment on day
+                break;
+            case (EDITING_MATERIAL):
+                addNameTxt.setText(projectList.get(projectNum).getTask(taskNum)
+                        .getMaterial(materialNum).getName());
+                break;
+        }
     }
 
     private void buildTaskAdapter() {
         taskAdapter = new ArrayAdapter<Task>(this,
-                android.R.layout.simple_list_item_1, taskList);
+                android.R.layout.simple_list_item_1, projectList.get(projectNum).getTasks());
+        refreshTaskList();
+    }
+
+    public void refreshTaskList() {
+        taskListView.setAdapter(taskAdapter);
     }
 
     private void buildAssignmentAdapter() {
         assignmentAdapter = new ArrayAdapter<Assignment>(this,
-                android.R.layout.simple_list_item_2, android.R.id.text1, currentTask.getAssignments()) {
+                android.R.layout.simple_list_item_2, android.R.id.text1,
+                projectList.get(projectNum).getTasks().get(taskNum).getAssignments()) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView text1 = (TextView) view.findViewById(android.R.id.text1);
                 TextView text2 = (TextView) view.findViewById(android.R.id.text2);
 
-                text1.setText(currentTask.getAssignments().get(position).getRole().getName());
-                text2.setText(currentTask.getAssignments().get(position).getPerson().getName());
+                text1.setText(projectList.get(projectNum).getTasks().get(taskNum).getAssignments()
+                        .get(position).getRole().getName());
+                text2.setText(projectList.get(projectNum).getTasks().get(taskNum).getAssignments()
+                        .get(position).getPerson().getName());
                 return view;
             }
         };
+        refreshAssignmentList();
     }
 
     private void refreshAssignmentList() {
@@ -311,11 +400,32 @@ public class AddWork extends AppCompatActivity
 
     private void buildMaterialAdapter() {
         materialAdapter = new ArrayAdapter<Material>(this,
-                android.R.layout.simple_list_item_1, currentTask.getMaterials());
+                android.R.layout.simple_list_item_1,
+                projectList.get(projectNum).getTasks().get(taskNum).getMaterials());
+        refreshMaterialList();
     }
 
     private void refreshMaterialList() {
         materialListView.setAdapter(materialAdapter);
+    }
+
+    private void changeMode(){
+        switch (state){
+            case (NEW_ASSIGNMENT):
+                addWorkCostView.setVisibility(View.INVISIBLE);
+                newMaterialView.setVisibility(View.INVISIBLE);
+                newAssignmentView.setVisibility(View.VISIBLE);
+                break;
+            case (NEW_MATERIAL):
+                addWorkCostView.setVisibility(View.INVISIBLE);
+                newAssignmentView.setVisibility(View.INVISIBLE);
+                newMaterialView.setVisibility(View.VISIBLE);
+                break;
+            default:
+                addWorkCostView.setVisibility(View.VISIBLE);
+                newAssignmentView.setVisibility(View.INVISIBLE);
+                newMaterialView.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

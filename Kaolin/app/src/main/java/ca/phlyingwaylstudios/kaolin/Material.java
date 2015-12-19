@@ -23,7 +23,7 @@ public class Material extends KaolinObject{
 //    public static final String PHASE = "phase";
     public int tempHoldingIndex = 0;
 
-    private ArrayList<MaterialCost> materialCosts;
+    private ArrayList<MaterialCost> materialCosts = new ArrayList<>();
 
     public boolean setUpMaterial(Context context, String name, double cost, Task task,
                                  Project project, Phase phase, List<Material> materialList){

@@ -127,9 +127,10 @@ public class ProjectOverview extends AppCompatActivity implements ListView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent tasksIntent = new Intent(this, AddTasks.class);
-        tasksIntent.putExtra(Project.ID, projectList.get(position).getObjectId());
-        tasksIntent.putExtra(Util.IS_NEW, false);
-        startActivityForResult(tasksIntent, NEW_TASKS_REQUEST);
+        Intent intent = new Intent(this, AddWork.class);
+        intent.putExtra(Project.ID, position);
+        //tasksIntent.putExtra(Util.IS_NEW, false);
+        //startActivityForResult(tasksIntent, NEW_TASKS_REQUEST);
+        startActivity(intent);
     }
 }

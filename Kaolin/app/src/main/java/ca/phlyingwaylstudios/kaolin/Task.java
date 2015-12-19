@@ -27,8 +27,8 @@ public class Task extends KaolinObject{
     public static final String START_DATES = "startDates";
     public static final String END_DATES = "endDates";
 
-    private ArrayList<Assignment> assignments;
-    private ArrayList<Material> materials;
+    private ArrayList<Assignment> assignments = new ArrayList<>();
+    private ArrayList<Material> materials = new ArrayList<>();
 
 
     public boolean setUpTask(Context context, String name, Phase phase, Boolean skipWeekends,

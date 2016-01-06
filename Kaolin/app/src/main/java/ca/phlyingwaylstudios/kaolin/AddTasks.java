@@ -293,6 +293,7 @@ public class AddTasks extends AppCompatActivity
             public void done(List<Person> objects, ParseException e) {
                 if (null == e) {
                     personList = objects;
+                    Log.d(LOG_TAG, "got persons");
                     for (Person p : personList) {
                         personNames.add(p.getName());
                     }
@@ -311,6 +312,7 @@ public class AddTasks extends AppCompatActivity
             public void done(List<Role> objects, ParseException e) {
                 if (null == e) {
                     roleList = objects;
+                    Log.d(LOG_TAG, "got roles");
                     for (Role r : roleList) {
                         roleNames.add(r.getName());
                     }
@@ -333,6 +335,7 @@ public class AddTasks extends AppCompatActivity
             @Override
             public void done(List<Assignment> objects, ParseException e) {
                 if (null == e) {
+                    Log.d(LOG_TAG, "got assignments");
                     allAssignmentsList = objects;
                     getMaterials();
                 } else {
@@ -349,6 +352,7 @@ public class AddTasks extends AppCompatActivity
             @Override
             public void done(List<Material> objects, ParseException e) {
                 if (null == e) {
+                    Log.d(LOG_TAG, "got materials");
                     allMaterialsList = objects;
                     getTasks();
                 } else {
@@ -365,6 +369,7 @@ public class AddTasks extends AppCompatActivity
             @Override
             public void done(List<Task> objects, ParseException e) {
                 if (null == e) {
+                    Log.d(LOG_TAG, "got tasks");
                     taskList = objects;
                     finishSetup();
                 } else {

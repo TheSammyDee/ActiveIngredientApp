@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -46,9 +47,12 @@ public class AddWork extends AppCompatActivity
     private Button newAssignBtn;
     private Button newMatBtn;
     private Button saveBtn;
+    private ListView addWorkListView;
     private LinearLayout addWorkCostView;
     private TextView addNameTxt;
     private EditText addWorkCostEditTxt;
+    private LinearLayout hoursRemainingView;
+    private EditText hoursRemainingEditTxt;
     private LinearLayout newAssignmentView;
     private Spinner personSpinner;
     private Spinner roleSpinner;
@@ -75,6 +79,7 @@ public class AddWork extends AppCompatActivity
     private List<Person> personList;
     private List<Role> roleList;
     private ArrayAdapter<Task> taskAdapter;
+    private AddWorkArrayAdapter addWorkAdapter;
     private ArrayAdapter<Assignment> assignmentAdapter;
     private ArrayAdapter<Material> materialAdapter;
     private ArrayAdapter<Role> roleAdapter;
@@ -101,14 +106,11 @@ public class AddWork extends AppCompatActivity
 
         getViews();
         setListeners();
-        Log.d(LOG_TAG, "set listeners");
         setUpDatePicker();
-        Log.d(LOG_TAG, "set date picker");
         taskListView.setAdapter(taskAdapter);
         assignmentListView.setAdapter(assignmentAdapter);
         materialListView.setAdapter(materialAdapter);
-        state = EDITING_ASSIGNMENT;
-        changeMode();
+        changeMode(EDITING_ASSIGNMENT);
 
         Intent i = getIntent();
         projectNum = i.getExtras().getInt(KaolinObject.ID);
@@ -139,9 +141,12 @@ public class AddWork extends AppCompatActivity
         newAssignBtn = (Button) findViewById(R.id.newAssignBtn);
         newMatBtn = (Button) findViewById(R.id.newMatBtn);
         saveBtn = (Button) findViewById(R.id.saveBtn);
+        addWorkListView = (ListView) findViewById(R.id.addWorkList);
         addWorkCostView = (LinearLayout) findViewById(R.id.addWorkCostView);
         addNameTxt = (TextView) findViewById(R.id.addNameTxt);
         addWorkCostEditTxt = (EditText) findViewById(R.id.addWorkCostEditTxt);
+        hoursRemainingView = (LinearLayout) findViewById(R.id.hoursRemainingView);
+        hoursRemainingEditTxt = (EditText) findViewById(R.id.hoursEditTxt);
         newAssignmentView = (LinearLayout) findViewById(R.id.newAssignmentView);
         personSpinner = (Spinner) findViewById(R.id.personSpinner);
         roleSpinner = (Spinner) findViewById(R.id.roleSpinner);
@@ -174,11 +179,13 @@ public class AddWork extends AppCompatActivity
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                currentDate = newDate.getTime();
+                currentDate = Util.removeTime(newDate.getTime());
                 dateEditTxt.setText(dateFormat.format(newDate.getTime()));
+                populateAddFields();
             }
         }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-        currentDate = new Date();
+        currentDate = Util.removeTime(new Date());
+        dateEditTxt.setText(dateFormat.format(currentDate));
     }
 
     private void populateView(){
@@ -235,6 +242,7 @@ public class AddWork extends AppCompatActivity
     private void collectData(){
         ParseQuery<Task> taskQuery = new ParseQuery<Task>(Task.class);
         taskQuery.whereEqualTo(KaolinObject.PROJECT, projectList.get(projectNum));
+        Log.d(LOG_TAG, projectList.get(projectNum).getName());
         taskQuery.findInBackground(new FindCallback<Task>() {
             @Override
             public void done(List<Task> objects, ParseException e) {
@@ -243,6 +251,7 @@ public class AddWork extends AppCompatActivity
                     ParseQuery<Assignment> assignQuery = new ParseQuery<Assignment>(Assignment.class);
                     assignQuery.whereEqualTo(KaolinObject.PROJECT, projectList.get(projectNum));
                     assignQuery.orderByAscending(KaolinObject.CREATED_AT);
+                    Log.d(LOG_TAG, "found tasks");
                     assignQuery.findInBackground(new FindCallback<Assignment>() {
                         @Override
                         public void done(List<Assignment> objects, ParseException e) {
@@ -294,6 +303,7 @@ public class AddWork extends AppCompatActivity
                         }
                     });
                 } else {
+                    Log.d(LOG_TAG, String.valueOf(e.getCode()));
                     Util.showFindError(getApplicationContext());
                 }
             }
@@ -339,34 +349,50 @@ public class AddWork extends AppCompatActivity
     }
 
     private void populateTaskList(){
+        taskList = projectList.get(projectNum).getTasks();
         buildTaskAdapter();
         taskNum = 0;
+        populateTaskDetails();
+    }
+
+    private void populateTaskDetails(){
+        assignmentList = taskList.get(taskNum).getAssignments();
+        materialList = taskList.get(taskNum).getMaterials();
         buildAssignmentAdapter();
         buildMaterialAdapter();
+        buildAddWorkAdapter();
         assignmentNum = 0;
         materialNum = 0;
+        workHoursList = assignmentList.get(assignmentNum).getWorkHourses();
+        if (materialList.size() > 0) {
+            materialCostList = materialList.get(materialNum).getMaterialCosts();
+        }
         populateAddFields();
     }
 
     private void populateAddFields(){
         switch (state){
             case (EDITING_ASSIGNMENT):
-                addNameTxt.setText(projectList.get(projectNum).getTask(taskNum)
-                        .getAssignment(assignmentNum).getPerson().getName() + " - "
-                        + projectList.get(projectNum).getTask(taskNum).getAssignment(assignmentNum)
-                        .getRole().getName());
-                //WORKING HERE figure out if work hours exist for assignment on day
+//                addNameTxt.setText(assignmentList.get(assignmentNum).getPerson().getName() + " - "
+//                        + assignmentList.get(assignmentNum).getRole().getName());
+//                Log.d(LOG_TAG, String.valueOf(assignmentList.get(assignmentNum).getRate()));
+//                hoursRemainingEditTxt.setText(String.valueOf(assignmentList.get(assignmentNum).getRate()));
+//                if (hoursExistForDay()){
+//                    addWorkCostEditTxt.setText(String.valueOf(workHoursList.get(workHoursNum).getHours()));
+//                }
                 break;
             case (EDITING_MATERIAL):
-                addNameTxt.setText(projectList.get(projectNum).getTask(taskNum)
-                        .getMaterial(materialNum).getName());
+                addNameTxt.setText(materialList.get(materialNum).getName());
+                if (costExistsForDay()){
+                    addWorkCostEditTxt.setText(String.valueOf(materialCostList.get(materialCostNum).getCost()));
+                }
                 break;
         }
     }
 
     private void buildTaskAdapter() {
         taskAdapter = new ArrayAdapter<Task>(this,
-                android.R.layout.simple_list_item_1, projectList.get(projectNum).getTasks());
+                android.R.layout.simple_list_item_1, taskList);
         refreshTaskList();
     }
 
@@ -377,17 +403,15 @@ public class AddWork extends AppCompatActivity
     private void buildAssignmentAdapter() {
         assignmentAdapter = new ArrayAdapter<Assignment>(this,
                 android.R.layout.simple_list_item_2, android.R.id.text1,
-                projectList.get(projectNum).getTasks().get(taskNum).getAssignments()) {
+                assignmentList) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView text1 = (TextView) view.findViewById(android.R.id.text1);
                 TextView text2 = (TextView) view.findViewById(android.R.id.text2);
 
-                text1.setText(projectList.get(projectNum).getTasks().get(taskNum).getAssignments()
-                        .get(position).getRole().getName());
-                text2.setText(projectList.get(projectNum).getTasks().get(taskNum).getAssignments()
-                        .get(position).getPerson().getName());
+                text1.setText(assignmentList.get(position).getRole().getName());
+                text2.setText(assignmentList.get(position).getPerson().getName());
                 return view;
             }
         };
@@ -401,7 +425,7 @@ public class AddWork extends AppCompatActivity
     private void buildMaterialAdapter() {
         materialAdapter = new ArrayAdapter<Material>(this,
                 android.R.layout.simple_list_item_1,
-                projectList.get(projectNum).getTasks().get(taskNum).getMaterials());
+                materialList);
         refreshMaterialList();
     }
 
@@ -409,22 +433,101 @@ public class AddWork extends AppCompatActivity
         materialListView.setAdapter(materialAdapter);
     }
 
-    private void changeMode(){
+    private void buildAddWorkAdapter(){
+        addWorkAdapter = new AddWorkArrayAdapter(getBaseContext(), assignmentList, currentDate);
+        refreshAddWorkAdapter();
+    }
+
+    private void refreshAddWorkAdapter(){
+        addWorkListView.setAdapter(addWorkAdapter);
+    }
+
+    private boolean hoursExistForDay(){
+        for (int i = 0; i < workHoursList.size(); i++){
+            if (workHoursList.get(i).getDate().after(currentDate)){
+                workHoursNum = i;
+                return false;
+            } else if (workHoursList.get(i).getDate().equals(currentDate)){
+                workHoursNum = i;
+                return true;
+            }
+        }
+        workHoursNum = workHoursList.size();
+        return false;
+    }
+
+    private boolean costExistsForDay(){
+        for (int i = 0; i < materialCostList.size(); i++){
+            if (materialCostList.get(i).getDate().after(currentDate)){
+                materialCostNum = i;
+                return false;
+            } else if (materialCostList.get(i).getDate().equals(currentDate)){
+                materialCostNum = i;
+                return true;
+            }
+        }
+        materialCostNum = materialCostList.size();
+        return false;
+    }
+
+    private void saveHoursCost(){
+        switch (state){
+            case (EDITING_ASSIGNMENT):
+                String hoursRemainingString = hoursRemainingEditTxt.getText().toString();
+                if (!hoursRemainingString.isEmpty()) {
+                    assignmentList.get(assignmentNum).setHoursRemaining(Double.valueOf(hoursRemainingString));
+                    assignmentList.get(assignmentNum).saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (null != e){
+                                Util.showSaveError(getApplicationContext());
+                            }
+                        }
+                    });
+                }
+                String hoursString = addWorkCostEditTxt.getText().toString();
+                if (!hoursString.isEmpty()){
+                    if (workHoursList.get(workHoursNum).getDate().equals(currentDate)){
+                        workHoursList.get(workHoursNum).setHours(Double.valueOf(hoursString));
+                        workHoursList.get(workHoursNum).saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (null != e){
+                                    Util.showSaveError(getApplicationContext());
+                                }
+                            }
+                        });
+                    }
+                }
+
+        }
+    }
+
+    private void changeMode(int newState){
+        state = newState;
         switch (state){
             case (NEW_ASSIGNMENT):
-                addWorkCostView.setVisibility(View.INVISIBLE);
-                newMaterialView.setVisibility(View.INVISIBLE);
+                addWorkCostView.setVisibility(View.GONE);
+                newMaterialView.setVisibility(View.GONE);
                 newAssignmentView.setVisibility(View.VISIBLE);
                 break;
             case (NEW_MATERIAL):
-                addWorkCostView.setVisibility(View.INVISIBLE);
-                newAssignmentView.setVisibility(View.INVISIBLE);
+                addWorkCostView.setVisibility(View.GONE);
+                newAssignmentView.setVisibility(View.GONE);
                 newMaterialView.setVisibility(View.VISIBLE);
                 break;
-            default:
+            case (EDITING_MATERIAL):
                 addWorkCostView.setVisibility(View.VISIBLE);
-                newAssignmentView.setVisibility(View.INVISIBLE);
-                newMaterialView.setVisibility(View.INVISIBLE);
+                hoursRemainingView.setVisibility(View.GONE);
+                newAssignmentView.setVisibility(View.GONE);
+                newMaterialView.setVisibility(View.GONE);
+            default:
+                //addWorkCostView.setVisibility(View.VISIBLE);
+                addWorkCostView.setVisibility(View.GONE);
+                //hoursRemainingView.setVisibility(View.VISIBLE);
+                hoursRemainingView.setVisibility(View.GONE);
+                newAssignmentView.setVisibility(View.GONE);
+                newMaterialView.setVisibility(View.GONE);
         }
     }
 
@@ -440,11 +543,36 @@ public class AddWork extends AppCompatActivity
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        switch (parent.getId()) {
+            case (R.id.taskListView):
+                changeMode(EDITING_ASSIGNMENT);
+                taskNum = position;
+                populateTaskDetails();
+                break;
+            case (R.id.assignmentsListView):
+                changeMode(EDITING_ASSIGNMENT);
+                assignmentNum = position;
+                workHoursList = assignmentList.get(assignmentNum).getWorkHourses();
+                populateAddFields();
+                break;
+            case (R.id.materialsListView):
+                changeMode(EDITING_MATERIAL);
+                materialNum = position;
+                materialCostList = materialList.get(materialNum).getMaterialCosts();
+                populateAddFields();
+                break;
+        }
     }
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()) {
+            case (R.id.dateEditTxt):
+                datePickerDialog.show();
+                break;
+            case (R.id.saveBtn):
+                saveHoursCost();
+                break;
+        }
     }
 }

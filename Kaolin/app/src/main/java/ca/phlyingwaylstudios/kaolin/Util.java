@@ -59,4 +59,8 @@ public class Util {
         return cal.getTime();
     }
 
+    public static int decimalsOf(double num){
+        return (int)((num - (int)num)*100);
+    }
+
 }
